@@ -1,7 +1,5 @@
 # Introdução
 
-Imagine que você deseja apresentar este projeto para investidores que deverão decidir se investem ou não no desenvolvimento da sua ferramenta.
-
 Atualmente, muitas pessoas enfrentam dificuldades para mobiliar suas casas ou adquirir itens básicos, como eletrodomésticos e eletrônicos, devido aos altos preços dos produtos novos. Ao mesmo tempo, é comum vermos objetos em ótimo estado sendo descartados ou esquecidos em depósitos por falta de um canal simples de repasse.
 Diante desse cenário, o nosso grupo planeja desenvolver um site de anúncios e compra de itens usados. A ideia é criar um ambiente digital onde o foco seja a acessibilidade, conectando quem quer desapegar de algo que não usa mais com quem precisa comprar por um preço muito mais baixo que o de loja. Com essa plataforma, pretendemos facilitar o comércio local e incentivar o reuso de produtos, ajudando no bolso do consumidor e diminuindo o desperdício.
 
