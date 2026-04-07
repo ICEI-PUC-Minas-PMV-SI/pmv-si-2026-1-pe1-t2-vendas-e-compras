@@ -1,4 +1,4 @@
-# Título do Projeto
+# SwapStore
 
 `CURSO: Sistemas de Informação`
 
@@ -6,20 +6,18 @@
 
 `SEMESTRE: 1º`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+Este projeto tem como objetivo a criação de uma aplicação web criada para facilitar a compra e venda de produtos usados, conectando pessoas que desejam desapegar de itens em bom estado com aquelas que buscam opções mais acessíveis. A proposta surge diante dos altos custos de produtos novos e da falta de plataformas simples e eficientes para esse tipo de comércio, tendo como objetivo promover economia, praticidade e sustentabilidade. O projeto define funcionalidades como cadastro de usuários, anúncios, filtros de busca, avaliações e histórico de transações, além de priorizar uma interface intuitiva e responsiva. Voltado principalmente para estudantes, jovens e famílias de baixa renda, o sistema busca incentivar o consumo consciente, reduzir o desperdício e demonstrar o potencial das soluções digitais na economia colaborativa. 
 
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
-* Nome completo do aluno 5
-
+* Augusto Procópio Cavassin
+* Carlos Eduardo Pereira
+* Eduardo Lopes Resende
+* Marcos Aurelio Dal Belo dos Santos Junior
 
 ## Orientador
 
-* Nome completo do professor 1
+* Clóvis Lemos Tavares
 
 # Planejamento
 
