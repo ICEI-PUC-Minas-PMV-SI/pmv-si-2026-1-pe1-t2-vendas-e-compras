@@ -3,7 +3,7 @@
 ## Personas
 
 | Vendedor | |
-| ----------------- | | ------------------------------------------------------------------------------------------------------------------------------- |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** | Pessoas físicas que possuem objetos em bom estado, mas sem uso, e buscam uma forma de desapegar e gerar renda extra |
 | **Necessidades:** | Facilidade para cadastrar anúncios, interface intuitiva para gerir as vendas e contato direto com possíveis compradores locais. |
 
