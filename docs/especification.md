@@ -8,37 +8,47 @@ Caso deseje atribuir uma imagem a sua persona, utilize o site https://thisperson
 
 ## Personas
 
-Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente através de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros.
-
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
-
-> **Links Úteis**:
-> - [Rock Content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x Público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de Empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de Stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
+| Vendedor |
+| --- |
+| Descrição: | Pessoas físicas que possuem objetos em bom estado, mas sem uso, e buscam uma forma de desapegar e gerar renda extra |
+| Necessidades: | Facilidade para cadastrar anúncios, interface intuitiva para gerir as vendas e contato direto com possíveis compradores locais. |
+| Comprador |
+| --- |
+| Descrição: | Indivíduos que precisam de itens essenciais, como móveis e eletrodomésticos, mas não têm orçamento para comprar produtos novos. |
+| Necessidades: | Acesso a uma variedade de produtos com preços reduzidos, ferramentas de busca eficientes e clareza nas informações do estado de conservação do item. |
 
 ## Histórias de Usuários
 
 Com base na análise das personas forma identificadas as seguintes histórias de usuários:
 
-|EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
-|--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
 
-Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
-
-> **Links Úteis**:
-> - [Histórias de usuários com exemplos e template](https://www.atlassian.com/br/agile/project-management/user-stories)
-> - [Como escrever boas histórias de usuário (User Stories)](https://medium.com/vertice/como-escrever-boas-users-stories-hist%C3%B3rias-de-usu%C3%A1rios-b29c75043fac)
-> - [User Stories: requisitos que humanos entendem](https://www.luiztools.com.br/post/user-stories-descricao-de-requisitos-que-humanos-entendem/)
-> - [Histórias de Usuários: mais exemplos](https://www.reqview.com/doc/user-stories-example.html)
-> - [9 Common User Story Mistakes](https://airfocus.com/blog/user-story-mistakes/)
+| **Eu como …**<br><br>**\[QUEM\]** | **… quero/desejo …**<br><br>**\[O QUE\]**                    | **… para ....**<br><br>**\[PORQUE\]** |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Vendedor                          | Cadastrar fotos e descrição do meu produto usado             | Que as pessoas saibam exatamente o    |
+|                                   |                                                              | estado do item e eu   consiga vender  |
+|                                   |                                                              | mais rápido.                          |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Comprador                         | Filtrar os anúncios por categoria (eletrônicos, móveis, etc) | Encontrar exatamente o que eu preciso |
+|                                   |                                                              | sem perder tempo vendo anúncios que   |
+|                                   |                                                              | não me interessam.                    |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Comprador                         | Visualizar o preço e a localização do vendedor               | Saber se o valor cabe no meu bolso e  |
+|                                   |                                                              | se é perto o suficiente para eu buscar|
+|                                   |                                                              | o produto.                            |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Vendedor                          | Editar ou excluir o meu anúncio a qualquer momento           | Atualizar informações ou remover o    |
+|                                   |                                                              | item caso ele já tenha sido vendido.  |                 | --------------------------------- | ------------------------------------------------------------ | --------------------------------------|    
+| Comprador                         | Salvar anúncios em uma lista de favoritos                    | Acompanhar os itens que me interessam |
+|                                   |                                                              | e decidir a compra depois.            |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Comprador                         | Ver avaliações dos produtos                                  | Ter maior segurança na hora de comprar|
+|                                   |                                                              | produtos.                             |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+| Vendedor                          | Acessar meu histórico de vendas                              | Melhorar meu desempenho como vendedor |                 | --------------------------------- | ------------------------------------------------------------ | --------------------------------------|                 
+| Comprador                         | Acessar meu histórico de compras                             | Ter controle sobre meus gastos        |
+| --------------------------------- | ------------------------------------------------------------ | --------------------------------------|
+                                                           
+                                      
 
 ## Requisitos
 
@@ -46,33 +56,32 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos Funcionais
 
-|ID    | Descrição do Requisito  | Prioridade | 
-|------|-----------------------------------------|----| 
-|RF-001| A aplicação deve permitir que o usuário gerencie suas tarefas | ALTA |  
-|RF-002| A aplicação deve permitir a emissão de um relatório de tarefas realizadas no mês   | MÉDIA | 
+| **ID** | **Descrição**                                                                                                             | **Prioridade** |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| RF- 01 | O sistema deve permitir criação de logins com usuário e senha | Alto           |
+| RF- 02 | O sistema deve permitir o usuário fazer login com seu perfil cadastrado                                                            | Alto  |
+| RF- 03 | O sistema deve permitir que o vendedor marque um produto como "Vendido" para removê-lo da listagem pública.                        | Alto  |
+| RF- 04 | O sistema deve permitir a filtragem de produtos por categoria e preço                                                              | Média |
+| RF- 05 | O sistema deve permitir o usuário visualizar a imagem do produto                                                                   | Alto  |
+| RF- 07 | O sistema deve permitir que vendedores cadastrem novos produtos                                                                    | Alto  |
+| RF- 08 | O sistema deve permitir que os usuários avaliem os produtos comprados                                                              | Baixo |
+| RF- 09 | O sistema deve calcular automaticamente o valor total da compra                                                                    | Alto  |
+| RF- 10 | O sistema deve permitir a edição e exclusão de produtos pelos vendedores                                                           | Alto  |
+| RF- 11 | O sistema deve incluir busca de produtos por nome                                                                                  | Alto  |
+| RF- 12 | O sistema deve incluir um histórico de vendas feita pelo vendedor                                                                  | Média |
+| RF- 13 | O sistema deve validar se todos os campos obrigatórios (nome, preço, estado de conservação) foram preenchidos no cadastro do item. | Alto  |
 
 
 ### Requisitos não Funcionais
 
-|ID     | Descrição do Requisito  |Prioridade |
-|-------|-------------------------|----|
-|RNF-001| A aplicação deve ser responsiva | MÉDIA | 
-|RNF-002| A aplicação deve processar requisições do usuário em no máximo 3s |  BAIXA | 
-
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
+| **ID** | **Descrição**                                                                                                               | **Prioridade** |
+| ------ | --------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| RNF-01 | O sistema deve estar disponível na web                                                                                      | alta           |
+| RNF-02 | O sistema deve fazer validação com chave de segurança 128 bits                                                              | baixa          |
+| RNF-03 | O sistema deve ser **totalmente responsivo**, adaptando-se a telas de smartphones, tablets e desktops.                      | Alta           |
+| RNF-04 | O sistema deve suportar o upload de imagens de até **2MB** para evitar lentidão no carregamento da página.                  | Média          |
+| RNF-05 | O sistema deve funcionar corretamente nos navegadores mais modernos (Chrome, Firefox, Edge e Safari).                       | Alta           |
+| RNF-06 | O sistema deve suportar **modo offline**, permitindo a visualização de produtos já carregados anteriormente no cache local. | Baixo          |
 
 ## Restrições
 
