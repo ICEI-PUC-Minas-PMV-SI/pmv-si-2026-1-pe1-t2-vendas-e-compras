@@ -8,7 +8,7 @@
 | **Necessidades:** | Facilidade para cadastrar anúncios, interface intuitiva para gerir as vendas e contato direto com possíveis compradores locais. |
 
 | Comprador | |
-| --- | | --- |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Descrição:** | Indivíduos que precisam de itens essenciais, como móveis e eletrodomésticos, mas não têm orçamento para comprar produtos novos. |
 | **Necessidades:** | Acesso a uma variedade de produtos com preços reduzidos, ferramentas de busca eficientes e clareza nas informações do estado de conservação do item. |
 
