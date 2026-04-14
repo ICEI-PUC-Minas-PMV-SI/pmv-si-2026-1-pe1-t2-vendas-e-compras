@@ -1,0 +1,212 @@
+*{margin: 0; padding: 0;}
+
+body{
+font-family: arial, helvetica, sans-serif;
+font-size: 12px;
+}
+img{
+  width: 100px;
+  height: 100px;
+  object-fit: scale-down;
+}
+.topnav {
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #58004b;
+  color: black;
+}
+
+/* Add an active class to highlight the current page */
+.topnav a.active {
+  background-color: #7e0455;
+  color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+.divBusca{
+  background-color:#E0EEEE;
+  border:solid 2px #5F9EA0;
+  border-radius:10px;
+  width:300px;
+  height:32px;
+  
+  display: flex;
+  flex-direction: row; /* row é padrão */
+  justify-content: center;
+}
+
+.txtBusca{
+  float:left;
+  background-color:transparent;
+  padding-left:5px;
+  font-size:18px;
+  border:none;
+  height:32px;
+  width:191px;
+}
+
+.btnBusca{
+  border:none;
+  float:right;
+  height:32px;
+  border-radius:0 7px 7px 0;
+  width:70px;
+  font-weight:bold;
+  background:#5F9EA0;
+}
+
+.divBusca img{
+  float:right;
+  height: 30px;
+}
+
+
+::-webkit-scrollbar {
+  width: 1px;
+  height: 1px;
+}
+
+::-webkit-scrollbar-button {
+  width: 1px;
+  height: 1px;
+}
+
+body {
+  background: #111;
+}
+
+div { 
+  box-sizing: border-box;
+  .cabecalho{
+    width: 100%;
+    background-color: #f6f6f6;
+    font-size: 3rem;
+    color: white;
+    text-align: center;
+    padding: .5rem 0;
+  }
+
+  .menu{
+    width: 100%;
+    background-color: #17984a;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .menu ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu li{
+    display: inline;
+    padding: 0 .7rem;
+  }
+
+  .menu a{
+    width: 100px;
+    color: rgb(214, 223, 224);
+    font-size: 1.2rem;
+  }
+
+}
+
+
+.gallery-row{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  display:-webkit-flex;
+  -webkit-box-orient:horizontal;
+  -webkit-box-direction:normal;
+      -ms-flex-flow:row nowrap;
+          flex-flow:row nowrap;
+}
+
+.gallery-row-scroll{
+  display:-webkit-box;
+  display:-ms-flexbox;
+  display:flex;
+  display:-webkit-flex;
+  /* overflow-x:scroll; */
+  -webkit-overflow-scrolling: touch;
+  -ms-flex-flow: row nowrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+
+  overflow: hidden;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+
+}
+
+.gallery-row-scroll > *{
+  margin: 0 0.1em;
+  -webkit-flex:0 0 auto;
+}
+
+.gallery-row-scroll > :first-child{
+  margin-left: 0;
+}
+
+.gallery-row-scroll > :last-child{
+  margin-right: 0;
+}
+
+.gallery-row img{
+  display:block;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.gallery-row .arrow.right{
+  right:0;
+}
+
+.gallery-row.large img{
+  height:200px;
+  width:auto;
+}
+
+.gallery-row.small img{
+  height:150px;
+  width:auto;
+}
+
+.arrow {
+  display: inline-block;
+  padding: 1rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
