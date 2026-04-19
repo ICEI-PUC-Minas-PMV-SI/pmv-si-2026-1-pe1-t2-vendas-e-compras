@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste CRUD</title>
+  <link rel="stylesheet" href="teste-crud.css">
+  <script src="scripts/crud-usuarios/criar-usuario.js" defer></script>
+  <script src="scripts/crud-usuarios/listar-usuarios.js" defer></script>
+  <script src="scripts/crud-usuarios/atualizar-usuario.js" defer></script>
+  <script src="scripts/crud-usuarios/remover-usuario.js" defer></script>
+</head>
+<body>
+  <h1>Teste CRUD de Usuarios</h1>
+  <p>Tela isolada de teste. Pode apagar depois.</p>
+
+  <div class="layout">
+    <section class="painel">
+      <div class="bloco">
+        <h2>Criar Usuario</h2>
+        <label class="campo">Usuario
+          <input id="criarUsuario" type="text" placeholder="ex: joao">
+        </label>
+        <label class="campo">Senha
+          <input id="criarSenha" type="text" placeholder="ex: 123456">
+        </label>
+        <label class="campo">Email
+          <input id="criarEmail" type="email" placeholder="ex: joao@email.com">
+        </label>
+        <button id="botaoCriar" type="button">Criar</button>
+      </div>
+
+      <div class="bloco">
+        <h2>Buscar ID</h2>
+        <label class="campo">Usuario
+          <input id="buscarUsuario" type="text">
+        </label>
+        <label class="campo">Senha
+          <input id="buscarSenha" type="text">
+        </label>
+        <button id="botaoBuscar" type="button">Buscar ID</button>
+      </div>
+
+      <div class="bloco">
+        <h2>Atualizar Usuario</h2>
+        <label class="campo">Usuario atual
+          <input id="atualizarUsuarioAtual" type="text">
+        </label>
+        <label class="campo">Senha atual
+          <input id="atualizarSenhaAtual" type="text">
+        </label>
+        <label class="campo">Novo usuario
+          <input id="atualizarNovoUsuario" type="text" placeholder="opcional">
+        </label>
+        <label class="campo">Nova senha
+          <input id="atualizarNovaSenha" type="text" placeholder="opcional">
+        </label>
+        <label class="campo">Novo email
+          <input id="atualizarNovoEmail" type="email" placeholder="opcional">
+        </label>
+        <button id="botaoAtualizar" type="button">Atualizar</button>
+      </div>
+
+      <div class="bloco">
+        <h2>Remover Usuario</h2>
+        <label class="campo">Usuario
+          <input id="removerUsuarioInput" type="text">
+        </label>
+        <label class="campo">Senha
+          <input id="removerSenhaInput" type="text">
+        </label>
+        <button id="botaoRemover" type="button">Remover</button>
+      </div>
+
+      <div class="bloco">
+        <h2>Apoio</h2>
+        <div class="linha-botoes">
+          <button id="botaoMostrarBanco" type="button">Mostrar Banco</button>
+          <button id="botaoLimparBanco" type="button">Limpar Banco</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="painel saida-box">
+      <h2>Output</h2>
+      <pre id="saida"></pre>
+    </aside>
+  </div>
+
+  <script>
+    function escreverSaida(titulo, dados) {
+      var saida = document.getElementById('saida');
+      var conteudo = titulo + '\n' + JSON.stringify(dados, null, 2);
+      saida.textContent = conteudo;
+    }
+
+    function lerBancoUsuarios() {
+      var texto = localStorage.getItem('swapstore_usuarios');
+      if (!texto) {
+        return [];
+      }
+
+      try {
+        var lista = JSON.parse(texto);
+        return Array.isArray(lista) ? lista : [];
+      } catch (erro) {
+        return [];
+      }
+    }
+
+    document.getElementById('botaoCriar').addEventListener('click', function () {
+      var usuario = document.getElementById('criarUsuario').value;
+      var senha = document.getElementById('criarSenha').value;
+      var email = document.getElementById('criarEmail').value;
+
+      var resultado = criarUsuario(usuario, senha, email);
+      escreverSaida('Resultado da criacao:', resultado);
+    });
+
+    document.getElementById('botaoBuscar').addEventListener('click', function () {
+      var usuario = document.getElementById('buscarUsuario').value;
+      var senha = document.getElementById('buscarSenha').value;
+
+      var id = listarUsuarios(usuario, senha);
+      escreverSaida('Resultado da busca de id:', { id: id });
+    });
+
+    document.getElementById('botaoAtualizar').addEventListener('click', function () {
+      var usuarioAtual = document.getElementById('atualizarUsuarioAtual').value;
+      var senhaAtual = document.getElementById('atualizarSenhaAtual').value;
+      var novoUsuario = document.getElementById('atualizarNovoUsuario').value;
+      var novaSenha = document.getElementById('atualizarNovaSenha').value;
+      var novoEmail = document.getElementById('atualizarNovoEmail').value;
+
+      var novosDados = {};
+
+      if (novoUsuario) {
+        novosDados.usuario = novoUsuario;
+      }
+
+      if (novaSenha) {
+        novosDados.senha = novaSenha;
+      }
+
+      if (novoEmail) {
+        novosDados.email = novoEmail;
+      }
+
+      var resultado = atualizarUsuario(usuarioAtual, senhaAtual, novosDados);
+      escreverSaida('Resultado da atualizacao:', resultado);
+    });
+
+    document.getElementById('botaoRemover').addEventListener('click', function () {
+      var usuario = document.getElementById('removerUsuarioInput').value;
+      var senha = document.getElementById('removerSenhaInput').value;
+
+      var resultado = removerUsuario(usuario, senha);
+      escreverSaida('Resultado da remocao:', { removeu: resultado });
+    });
+
+    document.getElementById('botaoMostrarBanco').addEventListener('click', function () {
+      escreverSaida('Conteudo atual do banco:', lerBancoUsuarios());
+    });
+
+    document.getElementById('botaoLimparBanco').addEventListener('click', function () {
+      localStorage.removeItem('swapstore_usuarios');
+      escreverSaida('Banco limpo com sucesso.', []);
+    });
+
+    escreverSaida('Pagina pronta para teste.', { bancoInicial: lerBancoUsuarios() });
+  </script>
+</body>
+</html>
