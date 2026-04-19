@@ -38,7 +38,7 @@ body {
 }
 
 .header-content {
-  min-height: 62px;
+  min-height: 54px;
   display: grid;
   grid-template-columns: 140px 1fr 140px;
   align-items: center;
@@ -51,14 +51,14 @@ body {
   align-items: center;
   text-decoration: none;
   justify-self: start;
-  width: 64px;
-  height: 64px;
+  width: 62px;
+  height: 62px;
   padding: 3px;
   border: 1px solid #1b1b1b;
   border-radius: 11px;
   background: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22);
-  transform: translateY(7px);
+  transform: translateY(6px);
   z-index: 3;
 }
 
@@ -73,7 +73,7 @@ body {
   gap: 0;
   background: var(--primary);
   border-radius: 6px;
-  padding: 2px;
+  padding: 4px;
 }
 
 .nav-link {
@@ -81,7 +81,7 @@ body {
   color: #f2ebff;
   font-size: 0.74rem;
   font-weight: 500;
-  padding: 0.2rem 0.62rem;
+  padding: 0.28rem 0.7rem;
   border-radius: 4px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
