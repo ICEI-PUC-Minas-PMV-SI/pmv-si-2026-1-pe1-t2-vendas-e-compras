@@ -1,0 +1,48 @@
+body{
+    background-color: #dbdada;
+}
+img{
+    display: block;
+    margin: 0 auto 20px;
+    width: 200px;
+    height: 150px;
+}
+.login-container {
+    height: 300px;
+    width: 300px;
+    margin: 100px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+.form {
+    margin-bottom: 15px;
+    align-content: center;
+}  
+input{
+    background-color: rgb(29, 195, 103);
+    border-top: 2.5px solid rgb(67, 39, 131);
+    border-left: 2.5px solid rgb(67, 39, 131);
+    border-bottom: 2.5px solid rgb(67, 39, 131);
+    border-right: 2.5px solid rgb(67, 39, 131);
+    border-radius: 10px;
+    width: 80%;
+    height: 30px;
+    display: block;
+    margin: 0 auto;
+} 
+::placeholder {
+    color: rgb(78, 73, 73);
+    font-family: cursive;
+}
+button {
+    background-color: rgb(255, 255, 255);
+    width: 30%;
+    height: 30px;
+    margin: 0 auto;
+    color: rgb(188, 53, 179);
+    font-weight: bold;
+    border: 0;
+}
