@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script src="scripts/paginacao.js" defer></script>
+  <script src="scripts/main.js" defer></script>
+  <title>SwapStore - Home</title>
+</head>
+<body data-pagina="inicio">
+  <header class="site-header">
+    <div class="top-green-line"></div>
+    <div class="container header-content">
+      <a class="brand" href="index.html" aria-label="Ir para a Home">
+        <img src="assets/images/logo.jpg" alt="Logo da SwapStore">
+      </a>
+
+      <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
+        <a href="index.html" class="nav-link" data-pagina-link="inicio">Home</a>
+        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
+        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+      </nav>
+
+      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+        <span class="profile-avatar"></span>
+        <span class="profile-name">Name</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-empty container">
+    <p>Aqui vai ser a Home.</p>
+  </main>
+</body>
+</html>
