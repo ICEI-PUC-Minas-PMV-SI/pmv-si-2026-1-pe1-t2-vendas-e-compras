@@ -187,7 +187,7 @@ body {
 
 /* Estilos específicos para login.html */
 body[data-pagina="login"] {
-  background-color: #dbdada;
+  background: linear-gradient(180deg, rgba(40, 199, 111, 0.12) 0%, rgba(40, 199, 111, 0.25) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -205,7 +205,7 @@ body[data-pagina="login"] img {
   height: 420px;
   width: 420px;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 2px solid #000000;
   border-radius: 10px;
   box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.1);
   background-color: white;
@@ -235,6 +235,7 @@ body[data-pagina="login"] img {
   padding: 0 10px;
   text-align: center;
   font-size: 14px;
+  font-weight: 900;
 }
 
 .login-container ::placeholder {
@@ -255,16 +256,16 @@ body[data-pagina="login"] img {
   background-color: rgb(255, 255, 255);
   width: 45%;
   height: 35px;
-  color: rgb(188, 53, 179);
-  font-weight: bold;
-  border: 2px solid rgb(188, 53, 179);
+  color: rgb(93, 16, 185);
+  font-weight: 900;
+  border: 2px solid rgb(93, 16, 185);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .login-container button:hover {
-  background-color: rgb(188, 53, 179);
+  background-color: rgb(93, 16, 185);
   color: white;
 }
 

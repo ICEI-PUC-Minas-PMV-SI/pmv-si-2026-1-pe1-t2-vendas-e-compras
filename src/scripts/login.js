@@ -48,21 +48,13 @@ function alternarModoRegistro() {
       containerEmail.style.display = 'block';
     }
     botaoLogin.textContent = 'Registrar';
-    botaoLogin.style.backgroundColor = 'rgb(41, 195, 103)';
-    botaoLogin.style.color = 'white';
-    botaoRegistrar.textContent = 'Voltar ao Login';
-    botaoRegistrar.style.backgroundColor = 'rgb(255, 255, 255)';
-    botaoRegistrar.style.color = 'rgb(188, 53, 179)';
+    botaoRegistrar.textContent = 'Voltar';
   } else {
     if (containerEmail) {
       containerEmail.style.display = 'none';
     }
     botaoLogin.textContent = 'Login';
-    botaoLogin.style.backgroundColor = 'rgb(255, 255, 255)';
-    botaoLogin.style.color = 'rgb(188, 53, 179)';
     botaoRegistrar.textContent = 'Registrar-se';
-    botaoRegistrar.style.backgroundColor = 'rgb(255, 255, 255)';
-    botaoRegistrar.style.color = 'rgb(188, 53, 179)';
     limparMensagens();
   }
   
