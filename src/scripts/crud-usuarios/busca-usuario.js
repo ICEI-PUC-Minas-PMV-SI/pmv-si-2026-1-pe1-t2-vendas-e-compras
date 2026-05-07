@@ -1,4 +1,4 @@
-function listarUsuarios(usuario, senha) {
+function buscaUsuario(usuario, senha) {
   var CHAVE_USUARIOS = 'swapstore_usuarios';
   
   if (!usuario || !senha) {

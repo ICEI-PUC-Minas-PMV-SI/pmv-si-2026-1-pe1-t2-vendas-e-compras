@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SwapStore</title>
+    <script src="../scripts/crud-usuarios/busca-usuario.js" defer></script>
+    <script src="../scripts/crud-usuarios/criar-usuario.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <link rel="stylesheet" href="../styles/main.css">
+</head>
+<body data-pagina="login">
+    <div class="login-container">
+        <img src="../assets/images/logo.jpg" alt="SwapStore Logo">
+        <form id="formulario">
+            <div class="form">
+                <input type="text" id="usuarioL" name="usuario" required placeholder="Usuário">
+            </div>
+            <div class="form">
+                <input type="password" id="senhaL" name="senha" required placeholder="Senha">
+            </div>
+            <div class="form" id="email-container" style="display: none;">
+                <input type="email" id="emailL" name="email" placeholder="Email">
+            </div>
+            <div class="form-buttons">
+                <button type="submit">Login</button>
+                <button type="button">Registrar-se</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

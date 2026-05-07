@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <script>
+    if (!localStorage.getItem('swapstore_usuario_logado')) {
+      window.location.href = 'pages/login.html';
+    }
+  </script>
   <script src="scripts/paginacao.js" defer></script>
   <script src="scripts/main.js" defer></script>
   <title>SwapStore - Home</title>
@@ -24,13 +29,13 @@
 
       <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
         <a href="index.html" class="nav-link" data-pagina-link="inicio">Home</a>
-        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
-        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
-        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+        <a href="pages/produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+        <a href="pages/carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+        <a href="pages/acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
+        <a href="pages/publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
-      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+      <a class="profile-box" id="linkPerfil" href="pages/perfil.html" aria-label="Ir para a pagina de perfil">
         <span class="profile-avatar"></span>
         <span class="profile-name">Name</span>
       </a>
