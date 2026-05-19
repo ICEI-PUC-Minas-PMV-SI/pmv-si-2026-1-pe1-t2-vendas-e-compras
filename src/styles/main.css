@@ -685,6 +685,104 @@ body[data-pagina="inicio"] .home-product-action:hover {
   align-self: center;
 }
 
+.produto-acoes-card {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
+}
+
+.botao-atualizar-produto {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.botao-atualizar-produto:hover {
+  background: #1d4ed8;
+}
+
+.confirm-box {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 200;
+}
+
+.confirm-box.open {
+  display: block;
+}
+
+.confirm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.confirm-content {
+  position: relative;
+  width: min(560px, 92vw);
+  margin: 8vh auto 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.confirm-content h3 {
+  margin: 0 0 10px;
+}
+
+.form-atualizar-produto {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-atualizar-produto input,
+.form-atualizar-produto textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.form-atualizar-produto textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-cancelar,
+.btn-confirmar {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-confirmar {
+  background: var(--primary);
+  color: #fff;
+}
+
 #botaoLogout {
   background: var(--green);
   color: #fff;
