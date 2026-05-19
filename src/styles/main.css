@@ -100,16 +100,16 @@ body {
   justify-self: end;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.88rem;
+  gap: 0.55rem;
+  font-size: 0.95rem;
   text-decoration: none;
   border-radius: 999px;
-  padding: 0.2rem 0.4rem;
+  padding: 0.32rem 0.65rem;
 }
 
 .profile-avatar {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 999px;
   background: linear-gradient(135deg, #d2d2d2, #9e9e9e);
   border: 1px solid #b9b9b9;
@@ -364,15 +364,15 @@ body[data-pagina="publicar"] #mensagemPublicar {
   border: 1px solid var(--line);
   border-radius: 12px;
   box-shadow: var(--shadow);
-  align-items: stretch;
+  align-items: flex-start;
   min-height: 96px;
   width: 100%;
 }
 
 .produto-resumo-thumb, .home-product-thumb {
-  flex: 0 0 112px;
-  width: 112px;
-  min-height: 112px;
+  flex: 0 0 92px;
+  width: 92px;
+  height: 92px;
 }
 
 .produto-resumo-thumb img, .home-product-thumb img {
@@ -381,13 +381,6 @@ body[data-pagina="publicar"] #mensagemPublicar {
   object-fit: cover;
   border-radius: 10px;
   display: block;
-}
-
-.produto-resumo-conteudo {
-  flex: 1 1 auto;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .produto-resumo-info { display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; min-width: 0; }
@@ -407,15 +400,14 @@ body[data-pagina="publicar"] #mensagemPublicar {
 }
 
 .botao-remover-produto {
-  margin-left: auto;
-  margin-top: auto;
+  margin-left: 12px;
   background: #e53e3e;
   color: #fff;
   border: none;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
-  align-self: flex-end;
+  align-self: center;
 }
 
 #botaoLogout {
@@ -427,6 +419,11 @@ body[data-pagina="publicar"] #mensagemPublicar {
   font-weight: 700;
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+
+body[data-pagina="perfil"] #botaoLogout {
+  display: block;
+  margin: 24px auto 0;
 }
 
 #botaoLogout:hover {
@@ -511,10 +508,62 @@ body[data-pagina="publicar"] #mensagemPublicar {
   width: 100%;
 }
 
+body[data-pagina="perfil"] #containerProdutos {
+  align-items: center;
+}
+
 #containerProdutos > div { width: min(100%, 980px); display: block; }
+
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 520px) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  min-height: 124px;
+}
+
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .produto-resumo-thumb,
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .home-product-thumb {
+  width: 96px;
+  height: 96px;
+  flex: 0 0 96px;
+}
+
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .produto-resumo-info {
+  min-width: 0;
+  max-width: 520px;
+}
+
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .produto-resumo-info p {
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .botao-remover-produto {
+  margin-left: 0;
+  justify-self: end;
+  align-self: center;
+}
 
 @media (max-width: 760px) {
   .produto-resumo-card, .home-product-card { flex-direction: column; min-height: auto; }
-  .produto-resumo-thumb, .home-product-thumb { flex: 0 0 auto; width: 100%; height: 180px; min-height: 180px; }
+  .produto-resumo-thumb, .home-product-thumb { flex: 0 0 auto; width: 100%; height: 180px; }
   #containerProdutos > div { width: 100%; }
+
+  body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .produto-resumo-thumb,
+  body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .home-product-thumb {
+    width: 100%;
+    height: 180px;
+    flex: 0 0 auto;
+  }
+
+  body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .botao-remover-produto {
+    justify-self: start;
+  }
 }
