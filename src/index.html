@@ -46,7 +46,6 @@
   <main class="page-empty container">
     <h2>Todos os Produtos</h2>
     <div id="containerProdutos"></div>
-    <pre id="produtosJSON"></pre>
   </main>
 
   <script>
@@ -54,28 +53,72 @@
       var produtos = listarProdutos();
       var container = document.getElementById('containerProdutos');
       container.innerHTML = '';
+      container.style.display = 'grid';
+      container.style.gridTemplateColumns = 'repeat(2, minmax(520px, 1fr))';
+      container.style.gap = '18px';
+      container.style.maxWidth = '1180px';
+      container.style.margin = '0 auto';
       
       produtos.forEach(function(produto) {
         var div = document.createElement('div');
-        div.style.border = '1px solid #ccc';
-        div.style.padding = '10px';
-        div.style.marginBottom = '10px';
-        div.innerHTML = '<strong>' + produto.nome + '</strong> - R$ ' + produto.preco + '<br>' + produto.descricao + '<br>';
-        var botaoDetalhes = document.createElement('a');
-        botaoDetalhes.href = 'pages/produto.html?id=' + produto.id_produto;
-        botaoDetalhes.textContent = 'Ver Detalhes';
-        botaoDetalhes.style.display = 'inline-block';
-        botaoDetalhes.style.marginTop = '5px';
-        botaoDetalhes.style.padding = '5px 10px';
-        botaoDetalhes.style.backgroundColor = '#5d10b9';
-        botaoDetalhes.style.color = '#fff';
-        botaoDetalhes.style.textDecoration = 'none';
-        botaoDetalhes.style.borderRadius = '4px';
-        div.appendChild(botaoDetalhes);
+        var imgSrc = produto.imagem && produto.imagem.length ? produto.imagem : 'assets/images/sem_imagem.jpg';
+        div.className = 'home-product-card';
+        div.style.display = 'grid';
+        div.style.gridTemplateColumns = '96px minmax(0, 1fr)';
+        div.style.alignItems = 'center';
+        div.style.gap = '12px';
+        div.style.minHeight = '128px';
+        div.style.width = '100%';
+        div.innerHTML = '<div class="home-product-thumb"><img src="' + imgSrc + '" alt=""></div>' +
+                        '<div class="home-product-body">' +
+                        '<div class="home-product-info">' +
+                        '<strong>' + produto.nome + '</strong>' +
+                        '<span>R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</span>' +
+                        '<p>' + (produto.descricao || 'Sem descrição') + '</p>' +
+                        '</div>' +
+                        '<a href="pages/produto.html?id=' + produto.id_produto + '" class="home-product-action">Visualizar</a>' +
+                        '</div>';
+
+        var thumb = div.querySelector('.home-product-thumb');
+        var body = div.querySelector('.home-product-body');
+        var info = div.querySelector('.home-product-info');
+        var desc = info ? info.querySelector('p') : null;
+        var action = div.querySelector('.home-product-action');
+
+        if (thumb) {
+          thumb.style.width = '78px';
+          thumb.style.height = '98px';
+          thumb.style.flex = '0 0 78px';
+        }
+
+        if (body) {
+          body.style.display = 'flex';
+          body.style.flexDirection = 'column';
+          body.style.justifyContent = 'space-between';
+          body.style.gap = '6px';
+          body.style.minWidth = '0';
+        }
+
+        if (info) {
+          info.style.display = 'flex';
+          info.style.flexDirection = 'column';
+          info.style.gap = '4px';
+          info.style.minWidth = '0';
+        }
+
+        if (desc) {
+          desc.style.display = '-webkit-box';
+          desc.style.webkitBoxOrient = 'vertical';
+          desc.style.webkitLineClamp = '2';
+          desc.style.overflow = 'hidden';
+        }
+
+        if (action) {
+          action.style.alignSelf = 'flex-start';
+        }
+
         container.appendChild(div);
       });
-      
-      document.getElementById('produtosJSON').textContent = JSON.stringify(produtos, null, 2);
     }
     
     document.addEventListener('DOMContentLoaded', function() {
