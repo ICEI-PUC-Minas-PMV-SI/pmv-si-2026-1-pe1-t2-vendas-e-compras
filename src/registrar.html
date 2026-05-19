@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar</title>
+    <script src="scripts/crud-usuarios/criar-usuario.js" defer></script>
+</head>
+<body>
+    <h2>Registrar</h2>
+    <form id="formRegistrar">
+        <input type="email" id="emailR" placeholder="Email" required><br>
+        <input type="text" id="usuarioR" placeholder="Usuário" required><br>
+        <input type="password" id="senhaR" placeholder="Senha" required><br>
+        <button type="submit">Registrar</button>
+    </form>
+    <div id="mensagemRegistrar" style="color:red;"></div>
+    <script>
+    document.getElementById('formRegistrar').onsubmit = function(e) {
+        e.preventDefault();
+        var email = document.getElementById('emailR').value.trim();
+        var usuario = document.getElementById('usuarioR').value.trim();
+        var senha = document.getElementById('senhaR').value;
+        var msg = document.getElementById('mensagemRegistrar');
+        msg.textContent = '';
+        if (!email || !usuario || !senha) {
+            msg.textContent = 'Preencha todos os campos.';
+            return;
+        }
+        var resultado = criarUsuario(usuario, senha, email);
+        if (resultado) {
+            localStorage.setItem('logado', JSON.stringify({ id: resultado.id, usuario: resultado.usuario, ts: Date.now() }));
+            window.location.href = 'index.html';
+        } else {
+            msg.textContent = 'Registro falhou: usuário ou email já existe ou campos inválidos.';
+        }
+    };
+    </script>
+    <p><a href="login.html">Voltar para o login</a></p>
+</body>
+</html>

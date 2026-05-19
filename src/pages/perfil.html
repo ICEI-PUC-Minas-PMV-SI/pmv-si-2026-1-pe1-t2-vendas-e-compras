@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script src="../scripts/paginacao.js" defer></script>
+  <script src="../scripts/main.js" defer></script>
+  <script src="../scripts/crud-produtos/listar-produtos.js" defer></script>
+  <script src="../scripts/crud-produtos/atualizar-produto.js" defer></script>
+  <script src="../scripts/crud-produtos/remover-produto.js" defer></script>
+  <title>SwapStore - Perfil</title>
+</head>
+<body data-pagina="perfil">
+  <header class="site-header">
+    <div class="top-green-line"></div>
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="Ir para a Home">
+        <img src="../assets/images/logo.jpg" alt="Logo da SwapStore">
+      </a>
+
+      <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
+        <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
+        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
+        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+      </nav>
+
+      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+        <span class="profile-avatar"></span>
+        <span class="profile-name">Name</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-empty container">
+    <h2>Meu Perfil</h2>
+    <div id="containerProdutos"></div>
+    <div id="confirmBox" class="confirm-box" aria-hidden="true"></div>
+    <button id="botaoLogout">Logout</button>
+    <button id="btnConfigPerfil" class="btn-config" aria-label="Configurações">
+      <img src="../assets/images/engrenagem.png" alt="config" />
+    </button>
+    <div id="popoverConfig" class="config-popover" aria-hidden="true">
+      <div class="popover-inner" role="dialog" aria-label="Configurações do perfil">
+        <div class="popover-header"><strong>Configurações</strong></div>
+        <div class="popover-body">
+          <button id="opcaoTrocarAvatar" class="opcao-config">Escolher foto de perfil</button>
+          <div id="listaAvatares" class="lista-avatares" aria-hidden="true"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function formatarMoedaBR(valorNumerico) {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(valorNumerico || 0);
+    }
+
+    function aplicarMascaraMoeda(input) {
+      if (!input) return;
+
+      input.addEventListener('input', function() {
+        var apenasDigitos = input.value.replace(/\D/g, '');
+        if (!apenasDigitos) {
+          input.value = '';
+          return;
+        }
+
+        var valor = parseInt(apenasDigitos, 10) / 100;
+        input.value = formatarMoedaBR(valor);
+      });
+    }
+
+    function lerPrecoComoNumero(valorTexto) {
+      var digitos = String(valorTexto || '').replace(/\D/g, '');
+      if (!digitos) return 0;
+      return parseInt(digitos, 10) / 100;
+    }
+
+    function abrirModalAtualizacao(produto) {
+      var confirmBox = document.getElementById('confirmBox');
+      if (!confirmBox) return;
+
+      var precoFormatado = formatarMoedaBR(produto.preco || 0);
+      confirmBox.innerHTML = '<div class="confirm-backdrop"></div>' +
+        '<div class="confirm-content" role="dialog" aria-label="Atualizar produto">' +
+        '<h3>Atualizar Produto</h3>' +
+        '<form id="formAtualizarProduto" class="form-atualizar-produto">' +
+        '<input type="text" id="atualizarNome" placeholder="Nome do Produto" value="' + (produto.nome || '').replace(/"/g, '&quot;') + '" required>' +
+        '<input type="text" id="atualizarPreco" placeholder="R$ 0,00" value="' + precoFormatado + '" required>' +
+        '<input type="number" id="atualizarQuantidade" min="1" value="' + (produto.quantidade || 1) + '" required>' +
+        '<textarea id="atualizarDescricao" placeholder="Descrição">' + (produto.descricao || '') + '</textarea>' +
+        '<input type="file" id="atualizarImagem" accept="image/*">' +
+        '<div class="confirm-actions">' +
+        '<button type="button" class="btn-cancelar" id="btnCancelarAtualizacao">Cancelar</button>' +
+        '<button type="submit" class="btn-confirmar">Salvar</button>' +
+        '</div>' +
+        '</form>' +
+        '</div>';
+
+      confirmBox.classList.add('open');
+      confirmBox.setAttribute('aria-hidden', 'false');
+
+      document.getElementById('btnCancelarAtualizacao').addEventListener('click', fecharModalAtualizacao);
+      confirmBox.querySelector('.confirm-backdrop').addEventListener('click', fecharModalAtualizacao);
+
+      var inputPreco = document.getElementById('atualizarPreco');
+      aplicarMascaraMoeda(inputPreco);
+
+      document.getElementById('formAtualizarProduto').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var nome = document.getElementById('atualizarNome').value.trim();
+        var precoTexto = document.getElementById('atualizarPreco').value.trim();
+        var quantidade = parseInt(document.getElementById('atualizarQuantidade').value, 10);
+        var descricao = document.getElementById('atualizarDescricao').value.trim();
+        var imagemInput = document.getElementById('atualizarImagem');
+        var preco = lerPrecoComoNumero(precoTexto);
+
+        if (!nome || isNaN(preco) || preco <= 0 || isNaN(quantidade) || quantidade < 1) {
+          alert('Preencha os campos corretamente.');
+          return;
+        }
+
+        function salvarAtualizacao(imagemData) {
+          var novosDados = {
+            nome: nome,
+            preco: preco,
+            quantidade: quantidade,
+            descricao: descricao,
+            status: quantidade > 0 ? 'disponivel' : 'indisponivel'
+          };
+
+          if (imagemData) {
+            novosDados.imagem = imagemData;
+          }
+
+          var atualizado = atualizarProduto(produto.id_produto, novosDados);
+          if (!atualizado) {
+            alert('Não foi possível atualizar o produto.');
+            return;
+          }
+
+          fecharModalAtualizacao();
+          exibirMeusProdutos();
+        }
+
+        if (imagemInput && imagemInput.files && imagemInput.files[0]) {
+          var leitor = new FileReader();
+          leitor.onload = function(ev) {
+            salvarAtualizacao(ev.target.result);
+          };
+          leitor.readAsDataURL(imagemInput.files[0]);
+          return;
+        }
+
+        salvarAtualizacao(null);
+      });
+    }
+
+    function fecharModalAtualizacao() {
+      var confirmBox = document.getElementById('confirmBox');
+      if (!confirmBox) return;
+      confirmBox.classList.remove('open');
+      confirmBox.setAttribute('aria-hidden', 'true');
+      confirmBox.innerHTML = '';
+    }
+
+    function exibirMeusProdutos() {
+      var id_usuario = localStorage.getItem('swapstore_usuario_logado');
+      var todosProdutos = listarProdutosPorUsuario(id_usuario);
+      var produtos = todosProdutos.filter(function(p) { return p.quantidade === undefined || p.quantidade > 0; });
+      var container = document.getElementById('containerProdutos');
+      container.innerHTML = '';
+      
+      produtos.forEach(function(produto) {
+        var div = document.createElement('div');
+        var imgSrc = produto.imagem && produto.imagem.length ? produto.imagem : '../assets/images/sem_imagem.jpg';
+        div.className = 'produto-resumo-card';
+        div.innerHTML = '<div class="produto-resumo-thumb"><img src="' + imgSrc + '" alt=""></div>' +
+                        '<div class="produto-resumo-info">' +
+                        '<strong>' + produto.nome + '</strong>' +
+                        '<span>R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</span>' +
+                        '<p>' + (produto.descricao || 'Sem descrição') + '</p>' +
+                        '</div>';
+        var acoes = document.createElement('div');
+        acoes.className = 'produto-acoes-card';
+
+        var botaoAtualizar = document.createElement('button');
+        botaoAtualizar.textContent = 'Atualizar';
+        botaoAtualizar.className = 'botao-atualizar-produto';
+        botaoAtualizar.onclick = function() {
+          abrirModalAtualizacao(produto);
+        };
+
+        var botaoRemover = document.createElement('button');
+        botaoRemover.textContent = 'Remover';
+        botaoRemover.className = 'botao-remover-produto';
+        botaoRemover.onclick = function() {
+          if (confirm('Tem certeza?')) {
+            removerProduto(produto.id_produto);
+            exibirMeusProdutos();
+          }
+        };
+
+        acoes.appendChild(botaoAtualizar);
+        acoes.appendChild(botaoRemover);
+        div.appendChild(acoes);
+        container.appendChild(div);
+      });
+    }
+    
+    function logout() {
+      localStorage.removeItem('swapstore_usuario_logado');
+      window.location.href = 'login.html';
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('botaoLogout').addEventListener('click', logout);
+      exibirMeusProdutos();
+    });
+
+    // Config popover logic (anchored to the button)
+    document.addEventListener('DOMContentLoaded', function() {
+      var btnConfig = document.getElementById('btnConfigPerfil');
+      var popover = document.getElementById('popoverConfig');
+      var opcaoAvatar = document.getElementById('opcaoTrocarAvatar');
+      var lista = document.getElementById('listaAvatares');
+      var avatars = ['avatar_aguia_vermelha.png','avatar_leao_azul.png','avatar_tubarao_amarelo.png'];
+
+      function populateAvatars() {
+        lista.innerHTML = '';
+        avatars.forEach(function(nomeArquivo) {
+          var img = document.createElement('img');
+          img.src = '../assets/images/' + nomeArquivo;
+          img.className = 'avatar-opcao';
+          img.alt = nomeArquivo;
+          img.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var idUsuarioLogado = localStorage.getItem('swapstore_usuario_logado');
+            if (!idUsuarioLogado) return alert('Nenhum usuário logado');
+            var usuariosJSON = localStorage.getItem('swapstore_usuarios');
+            var usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
+            var indice = usuarios.findIndex(function(u){ return u.id === idUsuarioLogado; });
+            if (indice === -1) return alert('Usuário não encontrado');
+            usuarios[indice].avatar = nomeArquivo;
+            localStorage.setItem('swapstore_usuarios', JSON.stringify(usuarios));
+            if (window.atualizarNomePerfil) window.atualizarNomePerfil();
+            if (window.aplicarAvatarPerfil) window.aplicarAvatarPerfil();
+            popover.classList.remove('open');
+            popover.setAttribute('aria-hidden','true');
+            lista.innerHTML = '';
+            lista.setAttribute('aria-hidden','true');
+          });
+          lista.appendChild(img);
+        });
+        lista.setAttribute('aria-hidden','false');
+      }
+
+      btnConfig.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (popover.classList.contains('open')) {
+          popover.classList.remove('open');
+          popover.setAttribute('aria-hidden','true');
+          lista.innerHTML = '';
+          lista.setAttribute('aria-hidden','true');
+        } else {
+          // open popover but do not populate avatars yet
+          popover.classList.add('open');
+          popover.setAttribute('aria-hidden','false');
+          lista.innerHTML = '';
+          lista.setAttribute('aria-hidden','true');
+        }
+      });
+
+      // When clicking the 'Escolher foto de perfil' button, show/hide avatars
+      opcaoAvatar.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (lista.getAttribute('aria-hidden') === 'true') {
+          populateAvatars();
+        } else {
+          lista.innerHTML = '';
+          lista.setAttribute('aria-hidden','true');
+        }
+      });
+
+      // Close popover when clicking outside
+      document.addEventListener('click', function(ev) {
+        var target = ev.target;
+        if (!popover.contains(target) && target !== btnConfig) {
+          if (popover.classList.contains('open')) {
+            popover.classList.remove('open');
+            popover.setAttribute('aria-hidden','true');
+            lista.innerHTML = '';
+            lista.setAttribute('aria-hidden','true');
+          }
+        }
+      });
+
+      // Prevent clicks inside the popover from closing it
+      popover.addEventListener('click', function(e) { e.stopPropagation(); });
+    });
+  </script>
+</body>
+</html>

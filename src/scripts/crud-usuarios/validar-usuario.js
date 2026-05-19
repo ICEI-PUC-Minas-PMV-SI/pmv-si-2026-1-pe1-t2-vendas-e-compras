@@ -1,4 +1,4 @@
-function listarUsuarios(usuario, senha) {
+function validarUsuario(usuario, senha) {
   var CHAVE_USUARIOS = 'swapstore_usuarios';
   
   if (!usuario || !senha) {
@@ -11,6 +11,5 @@ function listarUsuarios(usuario, senha) {
   var usuarioEncontrado = usuarios.find(function(usuarioDaLista) {
     return usuarioDaLista.usuario === usuario && usuarioDaLista.senha === senha;
   });
-  
   return usuarioEncontrado ? usuarioEncontrado.id : null;
 }
