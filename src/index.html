@@ -11,6 +11,7 @@
   </script>
   <script src="scripts/paginacao.js" defer></script>
   <script src="scripts/main.js" defer></script>
+  <script src="scripts/crud-produtos/listar-produtos.js" defer></script>
   <title>SwapStore - Home</title>
 </head>
 <body data-pagina="inicio">
@@ -43,7 +44,43 @@
   </header>
 
   <main class="page-empty container">
-    <p>Aqui vai ser a Home.</p>
+    <h2>Todos os Produtos</h2>
+    <div id="containerProdutos"></div>
+    <pre id="produtosJSON"></pre>
   </main>
+
+  <script>
+    function exibirProdutos() {
+      var produtos = listarProdutos();
+      var container = document.getElementById('containerProdutos');
+      container.innerHTML = '';
+      
+      produtos.forEach(function(produto) {
+        var div = document.createElement('div');
+        div.style.border = '1px solid #ccc';
+        div.style.padding = '10px';
+        div.style.marginBottom = '10px';
+        div.innerHTML = '<strong>' + produto.nome + '</strong> - R$ ' + produto.preco + '<br>' + produto.descricao + '<br>';
+        var botaoDetalhes = document.createElement('a');
+        botaoDetalhes.href = 'pages/produto.html?id=' + produto.id_produto;
+        botaoDetalhes.textContent = 'Ver Detalhes';
+        botaoDetalhes.style.display = 'inline-block';
+        botaoDetalhes.style.marginTop = '5px';
+        botaoDetalhes.style.padding = '5px 10px';
+        botaoDetalhes.style.backgroundColor = '#5d10b9';
+        botaoDetalhes.style.color = '#fff';
+        botaoDetalhes.style.textDecoration = 'none';
+        botaoDetalhes.style.borderRadius = '4px';
+        div.appendChild(botaoDetalhes);
+        container.appendChild(div);
+      });
+      
+      document.getElementById('produtosJSON').textContent = JSON.stringify(produtos, null, 2);
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      exibirProdutos();
+    });
+  </script>
 </body>
 </html>

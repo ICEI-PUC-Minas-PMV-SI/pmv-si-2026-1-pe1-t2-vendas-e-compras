@@ -6,6 +6,8 @@
   <link rel="stylesheet" type="text/css" href="../styles/main.css">
   <script src="../scripts/paginacao.js" defer></script>
   <script src="../scripts/main.js" defer></script>
+  <script src="../scripts/crud-produtos/listar-produtos.js" defer></script>
+  <script src="../scripts/crud-produtos/buscar-produto.js" defer></script>
   <title>SwapStore - Produto</title>
 </head>
 <body data-pagina="produto">
@@ -38,7 +40,107 @@
   </header>
 
   <main class="page-empty container">
-    <p>Aqui vai ser Produto.</p>
+    <div id="produtoDetalhe" class="produto-detalhe-container"></div>
   </main>
+
+  <script>
+    function comprarProduto(idProduto, quantidade) {
+      var idComprador = localStorage.getItem('swapstore_usuario_logado');
+      if (!idComprador) {
+        alert('Você precisa estar logado para comprar');
+        return;
+      }
+      
+      var produtosJSON = localStorage.getItem('swapstore_produtos');
+      var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
+      var produtoIndice = produtos.findIndex(function(p) { return p.id_produto === idProduto; });
+      
+      if (produtoIndice === -1) {
+        alert('Produto não encontrado');
+        return;
+      }
+      
+      var produto = produtos[produtoIndice];
+      if (produto.id_usuario === idComprador) {
+        alert('Você não pode comprar seu próprio produto');
+        return;
+      }
+      
+      if (produto.quantidade < quantidade) {
+        alert('Quantidade não disponível');
+        return;
+      }
+      
+      produtos[produtoIndice].quantidade -= quantidade;
+      if (produtos[produtoIndice].quantidade <= 0) {
+        produtos[produtoIndice].status = 'indisponivel';
+        produtos[produtoIndice].quantidade = 0;
+      }
+      
+      localStorage.setItem('swapstore_produtos', JSON.stringify(produtos));
+      alert('Compra realizada com sucesso!');
+      carregarProduto();
+    }
+
+    function carregarProduto() {
+      var params = new URLSearchParams(window.location.search);
+      var id = params.get('id');
+      var container = document.getElementById('produtoDetalhe');
+      container.innerHTML = '';
+      
+      if (!id) {
+        container.textContent = 'Produto não especificado.';
+        return;
+      }
+      
+      var produto = buscarProduto(id);
+      if (!produto) {
+        container.textContent = 'Produto não encontrado.';
+        return;
+      }
+      
+      if (!produto.quantidade) produto.quantidade = 1;
+      
+      var div = document.createElement('div');
+      div.className = 'produto-detalhe';
+      var imgSrc = produto.imagem && produto.imagem.length ? produto.imagem : '../assets/images/sem_imagem.jpg';
+      
+      var disponivel = produto.status === 'disponivel' && produto.quantidade > 0;
+      var statusText = disponivel ? 'Disponível (' + produto.quantidade + ')' : 'Indisponível';
+      
+      div.innerHTML = '<div class="produto-imagem"><img src="' + imgSrc + '" alt=""></div>' +
+                      '<div class="produto-info">' +
+                      '<h3>' + produto.nome + '</h3>' +
+                      '<p><strong>Preço:</strong> R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</p>' +
+                      '<p><strong>Status:</strong> ' + statusText + '</p>' +
+                      '<p><strong>Descrição:</strong> ' + (produto.descricao || 'Sem descrição') + '</p>';
+      
+      if (disponivel) {
+        div.innerHTML += '<div class="compra-section">' +
+                         '<label>Quantidade: <input type="number" id="qtdCompra" min="1" max="' + produto.quantidade + '" value="1" /></label>' +
+                         '<button id="btnComprar" class="btn-comprar">Comprar</button>' +
+                         '</div>';
+      }
+      
+      var botaoVoltar = document.createElement('a');
+      botaoVoltar.href = '../index.html';
+      botaoVoltar.className = 'btn-voltar';
+      botaoVoltar.textContent = 'Voltar';
+      
+      div.appendChild(botaoVoltar);
+      container.appendChild(div);
+      
+      if (disponivel) {
+        document.getElementById('btnComprar').addEventListener('click', function() {
+          var qtd = parseInt(document.getElementById('qtdCompra').value) || 1;
+          comprarProduto(produto.id_produto, qtd);
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      carregarProduto();
+    });
+  </script>
 </body>
 </html>

@@ -1,44 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="../styles/main.css">
-  <script src="../scripts/paginacao.js" defer></script>
-  <script src="../scripts/main.js" defer></script>
-  <title>SwapStore - Publicar</title>
-</head>
-<body data-pagina="publicar">
-  <header class="site-header">
-    <div class="top-green-line"></div>
-    <div class="container header-content">
-      <a class="brand" href="../index.html" aria-label="Ir para a Home">
-        <img src="../assets/images/logo.jpg" alt="Logo da SwapStore">
-      </a>
+  <!DOCTYPE html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/main.css">
+    <script src="../scripts/paginacao.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/crud-produtos/criar-produto.js" defer></script>
+    <title>SwapStore - Publicar</title>
+  </head>
+  <body data-pagina="publicar">
+    <header class="site-header">
+      <div class="top-green-line"></div>
+      <div class="container header-content">
+        <a class="brand" href="../index.html" aria-label="Ir para a Home">
+          <img src="../assets/images/logo.jpg" alt="Logo da SwapStore">
+        </a>
 
-      <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+        <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-      <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
-        <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
-        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
-        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
-        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
-      </nav>
+        <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
+          <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
+          <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+          <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+          <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
+          <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+        </nav>
 
-      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
-        <span class="profile-avatar"></span>
-        <span class="profile-name">Name</span>
-      </a>
-    </div>
-  </header>
+        <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+          <span class="profile-avatar"></span>
+          <span class="profile-name">Name</span>
+        </a>
+      </div>
+    </header>
 
-  <main class="page-empty container">
-    <p>Aqui vai ser Publicar.</p>
-  </main>
-</body>
-</html>
+    <main class="page-empty container">
+      <h2>Publicar Produto</h2>
+      <form id="formPublicar">
+        <input type="text" id="nomeProduto" placeholder="Nome do Produto" required><br>
+        <input type="text" id="precoProduto" placeholder="R$ 0,00" inputmode="decimal" autocomplete="off" required><br>
+        <label for="quantidadeProduto">Quantos itens você tem disponível?</label>
+        <input type="number" id="quantidadeProduto" placeholder="Ex: 5" min="1" value="1" required><br>
+        <textarea id="descricaoProduto" placeholder="Descrição"></textarea><br>
+        <input type="file" id="imagemProduto" accept="image/*"><br>
+        <button type="submit">Publicar</button>
+      </form>
+      <div id="mensagemPublicar"></div>
+      <div id="confirmBox" class="confirm-box" aria-hidden="true"></div>
+    </main>
+
+  </body>
+  </html>
