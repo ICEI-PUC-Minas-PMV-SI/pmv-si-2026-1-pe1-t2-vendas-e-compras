@@ -89,13 +89,13 @@
       container.innerHTML = '';
       
       if (!id) {
-        container.textContent = 'Produto não especificado.';
+        container.innerHTML = '<div class="produto-vazio">Produto não especificado.</div>';
         return;
       }
       
       var produto = buscarProduto(id);
       if (!produto) {
-        container.textContent = 'Produto não encontrado.';
+        container.innerHTML = '<div class="produto-vazio">Produto não encontrado.</div>';
         return;
       }
       
@@ -107,19 +107,25 @@
       
       var disponivel = produto.status === 'disponivel' && produto.quantidade > 0;
       var statusText = disponivel ? 'Disponível (' + produto.quantidade + ')' : 'Indisponível';
+      var statusClass = disponivel ? 'is-disponivel' : 'is-indisponivel';
       
-      div.innerHTML = '<div class="produto-imagem"><img src="' + imgSrc + '" alt=""></div>' +
+      div.innerHTML = '<div class="produto-imagem"><img src="' + imgSrc + '" alt="Imagem do produto"></div>' +
                       '<div class="produto-info">' +
-                      '<h3>' + produto.nome + '</h3>' +
-                      '<p><strong>Preço:</strong> R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</p>' +
-                      '<p><strong>Status:</strong> ' + statusText + '</p>' +
-                      '<p><strong>Descrição:</strong> ' + (produto.descricao || 'Sem descrição') + '</p>';
+                      '<h1 class="produto-titulo">' + produto.nome + '</h1>' +
+                      '<div class="produto-meta">' +
+                      '<div class="produto-preco">R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</div>' +
+                      '<span class="produto-status ' + statusClass + '">' + statusText + '</span>' +
+                      '</div>' +
+                      '<p class="produto-descricao">' + (produto.descricao || 'Sem descrição') + '</p>';
       
       if (disponivel) {
         div.innerHTML += '<div class="compra-section">' +
-                         '<label>Quantidade: <input type="number" id="qtdCompra" min="1" max="' + produto.quantidade + '" value="1" /></label>' +
+                         '<label class="qtd-label" for="qtdCompra">Quantidade</label>' +
+                         '<input type="number" id="qtdCompra" class="qtd-input" min="1" max="' + produto.quantidade + '" value="1" />' +
                          '<button id="btnComprar" class="btn-comprar">Comprar</button>' +
                          '</div>';
+      } else {
+        div.innerHTML += '<p class="produto-alerta">Este item está indisponível no momento.</p>';
       }
       
       var botaoVoltar = document.createElement('a');
@@ -127,7 +133,10 @@
       botaoVoltar.className = 'btn-voltar';
       botaoVoltar.textContent = 'Voltar';
       
-      div.appendChild(botaoVoltar);
+      var containerAcoes = document.createElement('div');
+      containerAcoes.className = 'produto-acoes';
+      containerAcoes.appendChild(botaoVoltar);
+      div.appendChild(containerAcoes);
       container.appendChild(div);
       
       if (disponivel) {
