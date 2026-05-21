@@ -21,11 +21,6 @@ O layout da tela de carrinho mantém o mesmo padrão de navegação superior, co
 
 <img width="1216" height="877" alt="Image" src="https://github.com/user-attachments/assets/257ddc18-355c-49d9-b5b7-bb5f2418e2c8" />
 
-### Acompanhar
-O layout da tela de acompanhamento de pedido segue o padrão visual da aplicação, com um menu fixo no topo. Na área principal, é exibido o status do pedido em formato de linha do tempo, indicando etapas como “em preparação”, “saiu para entrega” e “data de chegada”, com destaque visual para o progresso atual. Ao lado, há uma seção com os detalhes da compra, mostrando os produtos adquiridos e suas informações. Também é possível cancelar o pedido, dando mais controle ao usuário.
-
-<img width="1216" height="877" alt="Image" src="https://github.com/user-attachments/assets/a05fc04c-0f85-4ca0-8bb4-d44773627678" />
-
 ### Publicar
 O layout da tela de publicação de produto mantém a mesma aparência das outras páginas, com a barra de navegação no topo. Na área principal, há um espaço para adicionar a imagem do produto, junto com campos para preencher informações como nome, descrição e preço do item. Na parte inferior, está o botão de publicação, permitindo que o usuário finalize o cadastro do produto de forma simples.
 
