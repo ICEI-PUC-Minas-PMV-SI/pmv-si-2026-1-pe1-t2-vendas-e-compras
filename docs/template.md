@@ -49,7 +49,24 @@ Corpo de Texto: Arial
 
 ## Iconografia
 
-Defina os ícones que serão utilizados e suas respectivas funções.
+### Ícones de Usuário
 
-Apresente os estilos CSS criados para cada um dos elementos apresentados.
-Outras seções podem ser adicionadas neste documento para apresentar padrões de componentes, de menus, etc.
+As seguintes imagens tem como objetivo de escolha do usuário para ser seu ícone de perfil na página.
+
+<img width="364" height="366" alt="Image" src="https://github.com/user-attachments/assets/81f53bb9-c013-42b2-8ce2-379c61065da3" />
+
+<img width="364" height="366" alt="Image" src="https://github.com/user-attachments/assets/dbaa8566-19e6-41a6-96fb-6e13dc6de997" />
+
+<img width="364" height="366" alt="Image" src="https://github.com/user-attachments/assets/64c0aa6d-3d3b-4d10-9406-406033e58ceb" />
+
+### Logo
+
+Logo do Site que será usada em todas as páginas da site.
+
+<img width="448" height="285" alt="Image" src="https://github.com/user-attachments/assets/b33f10e3-74e1-4be8-b39e-1959cb314ed5" />
+
+### Sem Imagem
+
+Ícone que aparecerá quando o usuário não colocar nenhuma imagem atrelada ao seu produto.
+
+<img width="612" height="490" alt="Image" src="https://github.com/user-attachments/assets/78a2b451-e9c4-4884-a29c-f12b1d6e54d2" />
