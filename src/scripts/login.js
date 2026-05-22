@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function verificarLogin() {
   var usuarioLogado = localStorage.getItem('swapstore_usuario_logado');
   if (usuarioLogado) {
-    window.location.href = '../index.html';
+    window.location.href = 'index.html';
   }
 }
 
@@ -108,7 +108,7 @@ function realizarLogin() {
     exibirMensagem('Login realizado com sucesso! Redirecionando...', 'sucesso');
     
     setTimeout(function() {
-      window.location.href = '../index.html';
+      window.location.href = 'index.html';
     }, 1500);
   } else {
     exibirMensagem('Usuário ou senha incorretos!', 'erro');
