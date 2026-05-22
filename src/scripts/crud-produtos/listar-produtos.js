@@ -1,5 +1,6 @@
+var CHAVE_PRODUTOS = 'swapstore_produtos';
+
 function listarProdutos() {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
   var produtosJSON = localStorage.getItem(CHAVE_PRODUTOS);
 
   if (!produtosJSON) {
@@ -18,7 +19,6 @@ function listarProdutos() {
 }
 
 function listarProdutosPorUsuario(id_usuario) {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
   var produtosJSON = localStorage.getItem(CHAVE_PRODUTOS);
 
   if (!produtosJSON) {
@@ -37,7 +37,6 @@ function listarProdutosPorUsuario(id_usuario) {
 }
 
 function listarTodosProdutos() {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
   var produtosJSON = localStorage.getItem(CHAVE_PRODUTOS);
 
   if (!produtosJSON) {

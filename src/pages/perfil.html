@@ -30,7 +30,7 @@
         <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
         <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
         <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-<a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
       <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
@@ -73,6 +73,14 @@
       </div>
     </div>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <span class="footer-brand">SwapStore</span>
+      <span class="footer-tagline">Compre e venda com quem você conhece</span>
+      <span class="footer-copy">© 2026 · PUC Minas</span>
+    </div>
+  </footer>
 
   <script>
     function abrirModalAtualizacao(produto) {
@@ -180,7 +188,7 @@
         div.innerHTML = '<div class="produto-resumo-thumb"><img src="' + imgSrc + '" alt=""></div>' +
                         '<div class="produto-resumo-info">' +
                         '<strong>' + produto.nome + '</strong>' +
-                        '<span>R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</span>' +
+                        '<span>' + formatarMoedaBR(produto.preco) + '</span>' +
                         '<p>' + (produto.descricao || 'Sem descrição') + '</p>' +
                         '</div>';
         var acoes = document.createElement('div');
@@ -226,12 +234,12 @@
       minhasCompras.slice().reverse().forEach(function(compra) {
         var data = new Date(compra.data);
         var dataFormatada = data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-        var totalFormatado = 'R$ ' + compra.total.toFixed(2).replace('.', ',');
+        var totalFormatado = formatarMoedaBR(compra.total);
 
         var itensHTML = '';
         compra.itens.forEach(function(item) {
           var imgSrc = item.imagem && item.imagem.length ? item.imagem : '../assets/images/sem_imagem.jpg';
-          var precoItem = 'R$ ' + item.preco.toFixed(2).replace('.', ',');
+          var precoItem = formatarMoedaBR(item.preco);
           itensHTML += '<div class="historico-produto">' +
             '<div class="historico-produto-thumb"><img src="' + imgSrc + '" alt=""></div>' +
             '<span class="historico-produto-nome">' + item.nome + ' x' + item.quantidade + '</span>' +

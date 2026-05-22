@@ -1,6 +1,6 @@
+var CHAVE_PRODUTOS = 'swapstore_produtos';
+
 function buscarProduto(id_produto) {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
-  
   if (!id_produto) {
     return null;
   }

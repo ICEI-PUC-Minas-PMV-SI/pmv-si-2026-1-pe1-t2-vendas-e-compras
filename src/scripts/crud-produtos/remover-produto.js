@@ -1,5 +1,6 @@
+var CHAVE_PRODUTOS = 'swapstore_produtos';
+
 function removerProduto(id_produto) {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
   var id_usuario = localStorage.getItem('swapstore_usuario_logado');
   
   if (!id_produto || !id_usuario) {

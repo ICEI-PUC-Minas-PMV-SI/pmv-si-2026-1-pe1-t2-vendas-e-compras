@@ -1,5 +1,6 @@
+var CHAVE_PRODUTOS = 'swapstore_produtos';
+
 function criarProduto(nome, preco, descricao, imagemData, quantidade) {
-  var CHAVE_PRODUTOS = 'swapstore_produtos';
   var id_usuario = localStorage.getItem('swapstore_usuario_logado');
   
   if (!nome || !preco || !id_usuario) {

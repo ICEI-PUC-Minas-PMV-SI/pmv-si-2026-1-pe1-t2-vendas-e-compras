@@ -9,6 +9,7 @@
       window.location.href = 'login.html';
     }
   </script>
+  <script src="scripts/utils.js" defer></script>
   <script src="scripts/paginacao.js" defer></script>
   <script src="scripts/main.js" defer></script>
   <script src="scripts/crud-produtos/listar-produtos.js" defer></script>
@@ -32,7 +33,7 @@
         <a href="index.html" class="nav-link" data-pagina-link="inicio">Home</a>
         <a href="pages/produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
         <a href="pages/carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-<a href="pages/publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+        <a href="pages/publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
       <a class="profile-box" id="linkPerfil" href="pages/perfil.html" aria-label="Ir para a pagina de perfil">
@@ -54,6 +55,14 @@
     </div>
     <div id="containerProdutos"></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <span class="footer-brand">SwapStore</span>
+      <span class="footer-tagline">Compre e venda com quem você conhece</span>
+      <span class="footer-copy">© 2026 · PUC Minas</span>
+    </div>
+  </footer>
 
   <script>
     function exibirProdutos() {
@@ -87,70 +96,21 @@
         return;
       }
 
-      container.style.display = 'grid';
-      container.style.gridTemplateColumns = 'repeat(2, minmax(520px, 1fr))';
-      container.style.gap = '18px';
-      container.style.maxWidth = '1180px';
-      container.style.margin = '0 auto';
-      
+      container.style.display = '';
+
       produtos.forEach(function(produto) {
         var div = document.createElement('div');
         var imgSrc = produto.imagem && produto.imagem.length ? produto.imagem : 'assets/images/sem_imagem.jpg';
         div.className = 'home-product-card';
-        div.style.display = 'grid';
-        div.style.gridTemplateColumns = '96px minmax(0, 1fr)';
-        div.style.alignItems = 'center';
-        div.style.gap = '12px';
-        div.style.minHeight = '128px';
-        div.style.width = '100%';
         div.innerHTML = '<div class="home-product-thumb"><img src="' + imgSrc + '" alt=""></div>' +
                         '<div class="home-product-body">' +
                         '<div class="home-product-info">' +
                         '<strong>' + produto.nome + '</strong>' +
-                        '<span>R$ ' + produto.preco.toFixed(2).replace('.', ',') + '</span>' +
+                        '<span>' + formatarMoedaBR(produto.preco) + '</span>' +
                         '<p>' + (produto.descricao || 'Sem descrição') + '</p>' +
                         '</div>' +
                         '<a href="pages/produto.html?id=' + produto.id_produto + '" class="home-product-action">Visualizar</a>' +
                         '</div>';
-
-        var thumb = div.querySelector('.home-product-thumb');
-        var body = div.querySelector('.home-product-body');
-        var info = div.querySelector('.home-product-info');
-        var desc = info ? info.querySelector('p') : null;
-        var action = div.querySelector('.home-product-action');
-
-        if (thumb) {
-          thumb.style.width = '78px';
-          thumb.style.height = '98px';
-          thumb.style.flex = '0 0 78px';
-        }
-
-        if (body) {
-          body.style.display = 'flex';
-          body.style.flexDirection = 'column';
-          body.style.justifyContent = 'space-between';
-          body.style.gap = '6px';
-          body.style.minWidth = '0';
-        }
-
-        if (info) {
-          info.style.display = 'flex';
-          info.style.flexDirection = 'column';
-          info.style.gap = '4px';
-          info.style.minWidth = '0';
-        }
-
-        if (desc) {
-          desc.style.display = '-webkit-box';
-          desc.style.webkitBoxOrient = 'vertical';
-          desc.style.webkitLineClamp = '2';
-          desc.style.overflow = 'hidden';
-        }
-
-        if (action) {
-          action.style.alignSelf = 'flex-start';
-        }
-
         container.appendChild(div);
       });
     }
