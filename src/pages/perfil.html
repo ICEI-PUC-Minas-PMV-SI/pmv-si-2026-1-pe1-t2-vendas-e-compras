@@ -30,8 +30,7 @@
         <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
         <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
         <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
-        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+<a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
       <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
@@ -43,7 +42,21 @@
 
   <main class="page-empty container">
     <h2>Meu Perfil</h2>
-    <div id="containerProdutos"></div>
+
+    <div class="perfil-tabs">
+      <button class="perfil-tab is-active" id="tabProdutos">Meus Produtos</button>
+      <button class="perfil-tab" id="tabHistorico">Minhas Compras</button>
+    </div>
+
+    <div id="painelProdutos">
+      <p id="contadorProdutos" class="contador-produtos"></p>
+      <div id="containerProdutos"></div>
+    </div>
+
+    <div id="painelHistorico" style="display:none;">
+      <div id="containerHistorico"></div>
+    </div>
+
     <div id="confirmBox" class="confirm-box" aria-hidden="true"></div>
     <button id="botaoLogout">Logout</button>
     <button id="btnConfigPerfil" class="btn-config" aria-label="Configurações">
@@ -55,6 +68,7 @@
         <div class="popover-body">
           <button id="opcaoTrocarAvatar" class="opcao-config">Escolher foto de perfil</button>
           <div id="listaAvatares" class="lista-avatares" aria-hidden="true"></div>
+          <button id="opcaoAlterarDados" class="opcao-config">Alterar nome e senha</button>
         </div>
       </div>
     </div>
@@ -155,6 +169,8 @@
       var todosProdutos = listarProdutosPorUsuario(id_usuario);
       var produtos = todosProdutos.filter(function(p) { return p.quantidade === undefined || p.quantidade > 0; });
       var container = document.getElementById('containerProdutos');
+      var contador = document.getElementById('contadorProdutos');
+      if (contador) contador.textContent = produtos.length + ' produto(s) à venda';
       container.innerHTML = '';
       
       produtos.forEach(function(produto) {
@@ -194,6 +210,112 @@
       });
     }
     
+    function exibirHistorico() {
+      var idUsuario = localStorage.getItem('swapstore_usuario_logado');
+      var historicoJSON = localStorage.getItem('swapstore_historico');
+      var historico = historicoJSON ? JSON.parse(historicoJSON) : [];
+      var minhasCompras = historico.filter(function(c) { return c.id_comprador === idUsuario; });
+      var container = document.getElementById('containerHistorico');
+      container.innerHTML = '';
+
+      if (!minhasCompras.length) {
+        container.innerHTML = '<div class="historico-vazio"><p>Você ainda não realizou nenhuma compra.</p><a href="../index.html" class="btn-voltar-home">Ver produtos</a></div>';
+        return;
+      }
+
+      minhasCompras.slice().reverse().forEach(function(compra) {
+        var data = new Date(compra.data);
+        var dataFormatada = data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        var totalFormatado = 'R$ ' + compra.total.toFixed(2).replace('.', ',');
+
+        var itensHTML = '';
+        compra.itens.forEach(function(item) {
+          var imgSrc = item.imagem && item.imagem.length ? item.imagem : '../assets/images/sem_imagem.jpg';
+          var precoItem = 'R$ ' + item.preco.toFixed(2).replace('.', ',');
+          itensHTML += '<div class="historico-produto">' +
+            '<div class="historico-produto-thumb"><img src="' + imgSrc + '" alt=""></div>' +
+            '<span class="historico-produto-nome">' + item.nome + ' x' + item.quantidade + '</span>' +
+            '<span class="historico-produto-preco">' + precoItem + '</span>' +
+            '</div>';
+        });
+
+        var div = document.createElement('div');
+        div.className = 'historico-item';
+        div.innerHTML = '<div class="historico-header">' +
+          '<span class="historico-data">' + dataFormatada + '</span>' +
+          '<span class="historico-total">' + totalFormatado + '</span>' +
+          '</div>' +
+          '<div class="historico-itens">' + itensHTML + '</div>';
+        container.appendChild(div);
+      });
+    }
+
+    function abrirModalAlterarDados() {
+      var idUsuario = localStorage.getItem('swapstore_usuario_logado');
+      var usuariosJSON = localStorage.getItem('swapstore_usuarios');
+      var usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
+      var usuarioAtual = null;
+      for (var i = 0; i < usuarios.length; i++) {
+        if (usuarios[i].id === idUsuario) { usuarioAtual = usuarios[i]; break; }
+      }
+      if (!usuarioAtual) return;
+
+      var confirmBox = document.getElementById('confirmBox');
+      confirmBox.innerHTML = '<div class="confirm-backdrop"></div>' +
+        '<div class="confirm-content" role="dialog" aria-label="Alterar dados">' +
+        '<h3>Alterar Nome e Senha</h3>' +
+        '<form id="formAlterarDados" class="form-atualizar-produto">' +
+        '<input type="text" id="alterarNome" placeholder="Novo nome" value="' + (usuarioAtual.usuario || '').replace(/"/g, '&quot;') + '" required>' +
+        '<input type="password" id="alterarSenhaAtual" placeholder="Senha atual" required>' +
+        '<input type="password" id="alterarNovaSenha" placeholder="Nova senha (deixe vazio para manter)">' +
+        '<div class="confirm-actions">' +
+        '<button type="button" id="btnCancelarAlterarDados" class="btn-cancelar">Cancelar</button>' +
+        '<button type="submit" class="btn-confirmar">Salvar</button>' +
+        '</div>' +
+        '</form>' +
+        '</div>';
+
+      confirmBox.classList.add('open');
+      confirmBox.setAttribute('aria-hidden', 'false');
+
+      document.getElementById('btnCancelarAlterarDados').addEventListener('click', function() {
+        confirmBox.classList.remove('open');
+        confirmBox.setAttribute('aria-hidden', 'true');
+        confirmBox.innerHTML = '';
+      });
+      confirmBox.querySelector('.confirm-backdrop').addEventListener('click', function() {
+        confirmBox.classList.remove('open');
+        confirmBox.setAttribute('aria-hidden', 'true');
+        confirmBox.innerHTML = '';
+      });
+
+      document.getElementById('formAlterarDados').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var novoNome = document.getElementById('alterarNome').value.trim();
+        var senhaAtual = document.getElementById('alterarSenhaAtual').value;
+        var novaSenha = document.getElementById('alterarNovaSenha').value;
+
+        if (!novoNome) { alert('O nome não pode estar vazio.'); return; }
+        if (senhaAtual !== usuarioAtual.senha) { alert('Senha atual incorreta.'); return; }
+
+        var nomeOcupado = usuarios.some(function(u) {
+          return u.usuario === novoNome && u.id !== idUsuario;
+        });
+        if (nomeOcupado) { alert('Este nome já está em uso.'); return; }
+
+        var indice = usuarios.indexOf(usuarioAtual);
+        usuarios[indice].usuario = novoNome;
+        if (novaSenha) usuarios[indice].senha = novaSenha;
+        localStorage.setItem('swapstore_usuarios', JSON.stringify(usuarios));
+
+        if (window.atualizarNomePerfil) window.atualizarNomePerfil();
+        confirmBox.classList.remove('open');
+        confirmBox.setAttribute('aria-hidden', 'true');
+        confirmBox.innerHTML = '';
+        alert('Dados atualizados com sucesso!');
+      });
+    }
+
     function logout() {
       localStorage.removeItem('swapstore_usuario_logado');
       window.location.href = '../login.html';
@@ -202,6 +324,26 @@
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('botaoLogout').addEventListener('click', logout);
       exibirMeusProdutos();
+
+      var tabProdutos = document.getElementById('tabProdutos');
+      var tabHistorico = document.getElementById('tabHistorico');
+      var painelProdutos = document.getElementById('painelProdutos');
+      var painelHistorico = document.getElementById('painelHistorico');
+
+      tabProdutos.addEventListener('click', function() {
+        tabProdutos.classList.add('is-active');
+        tabHistorico.classList.remove('is-active');
+        painelProdutos.style.display = '';
+        painelHistorico.style.display = 'none';
+      });
+
+      tabHistorico.addEventListener('click', function() {
+        tabHistorico.classList.add('is-active');
+        tabProdutos.classList.remove('is-active');
+        painelHistorico.style.display = '';
+        painelProdutos.style.display = 'none';
+        exibirHistorico();
+      });
     });
 
     // Config popover logic (anchored to the button)
@@ -209,6 +351,7 @@
       var btnConfig = document.getElementById('btnConfigPerfil');
       var popover = document.getElementById('popoverConfig');
       var opcaoAvatar = document.getElementById('opcaoTrocarAvatar');
+      var opcaoAlterarDados = document.getElementById('opcaoAlterarDados');
       var lista = document.getElementById('listaAvatares');
       var avatars = ['avatar_aguia_vermelha.png','avatar_leao_azul.png','avatar_tubarao_amarelo.png'];
 
@@ -266,6 +409,15 @@
           lista.innerHTML = '';
           lista.setAttribute('aria-hidden','true');
         }
+      });
+
+      opcaoAlterarDados.addEventListener('click', function(e) {
+        e.stopPropagation();
+        popover.classList.remove('open');
+        popover.setAttribute('aria-hidden','true');
+        lista.innerHTML = '';
+        lista.setAttribute('aria-hidden','true');
+        abrirModalAlterarDados();
       });
 
       // Close popover when clicking outside

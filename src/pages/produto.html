@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script src="../scripts/carrinho.js" defer></script>
   <script src="../scripts/paginacao.js" defer></script>
   <script src="../scripts/main.js" defer></script>
   <script src="../scripts/crud-produtos/listar-produtos.js" defer></script>
@@ -28,8 +29,7 @@
         <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
         <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
         <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-        <a href="acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
-        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+<a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
       <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
@@ -50,36 +50,34 @@
         alert('Você precisa estar logado para comprar');
         return;
       }
-      
+
       var produtosJSON = localStorage.getItem('swapstore_produtos');
       var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
-      var produtoIndice = produtos.findIndex(function(p) { return p.id_produto === idProduto; });
-      
-      if (produtoIndice === -1) {
+      var produto = null;
+      for (var i = 0; i < produtos.length; i++) {
+        if (produtos[i].id_produto === idProduto) {
+          produto = produtos[i];
+          break;
+        }
+      }
+
+      if (!produto) {
         alert('Produto não encontrado');
         return;
       }
-      
-      var produto = produtos[produtoIndice];
+
       if (produto.id_usuario === idComprador) {
         alert('Você não pode comprar seu próprio produto');
         return;
       }
-      
+
       if (produto.quantidade < quantidade) {
         alert('Quantidade não disponível');
         return;
       }
-      
-      produtos[produtoIndice].quantidade -= quantidade;
-      if (produtos[produtoIndice].quantidade <= 0) {
-        produtos[produtoIndice].status = 'indisponivel';
-        produtos[produtoIndice].quantidade = 0;
-      }
-      
-      localStorage.setItem('swapstore_produtos', JSON.stringify(produtos));
-      alert('Compra realizada com sucesso!');
-      carregarProduto();
+
+      adicionarAoCarrinho(produto, quantidade);
+      window.location.href = 'carrinho.html';
     }
 
     function carregarProduto() {

@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="styles/main.css">
   <script>
     if (!localStorage.getItem('swapstore_usuario_logado')) {
-      window.location.href = 'pages/login.html';
+      window.location.href = 'login.html';
     }
   </script>
   <script src="scripts/paginacao.js" defer></script>
@@ -32,8 +32,7 @@
         <a href="index.html" class="nav-link" data-pagina-link="inicio">Home</a>
         <a href="pages/produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
         <a href="pages/carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
-        <a href="pages/acompanhar.html" class="nav-link" data-pagina-link="acompanhar">Acompanhar</a>
-        <a href="pages/publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+<a href="pages/publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
       </nav>
 
       <a class="profile-box" id="linkPerfil" href="pages/perfil.html" aria-label="Ir para a pagina de perfil">
@@ -45,14 +44,49 @@
 
   <main class="page-empty container">
     <h2>Todos os Produtos</h2>
+    <div class="home-controles">
+      <input type="text" id="buscaProduto" class="home-busca" placeholder="Buscar produto...">
+      <select id="ordenarProduto" class="home-ordenar">
+        <option value="recente">Mais recente</option>
+        <option value="menor">Menor preço</option>
+        <option value="maior">Maior preço</option>
+      </select>
+    </div>
     <div id="containerProdutos"></div>
   </main>
 
   <script>
     function exibirProdutos() {
-      var produtos = listarProdutos();
+      var busca = (document.getElementById('buscaProduto').value || '').toLowerCase().trim();
+      var ordem = document.getElementById('ordenarProduto').value;
+      var todos = listarProdutos();
+
+      var produtos = busca ? todos.filter(function(p) {
+        return p.nome.toLowerCase().indexOf(busca) !== -1 ||
+               (p.descricao || '').toLowerCase().indexOf(busca) !== -1;
+      }) : todos;
+
+      if (ordem === 'menor') {
+        produtos.sort(function(a, b) { return a.preco - b.preco; });
+      } else if (ordem === 'maior') {
+        produtos.sort(function(a, b) { return b.preco - a.preco; });
+      } else {
+        produtos.sort(function(a, b) { return new Date(b.criado_em) - new Date(a.criado_em); });
+      }
+
       var container = document.getElementById('containerProdutos');
       container.innerHTML = '';
+
+      if (!produtos.length) {
+        container.style.display = 'block';
+        container.innerHTML = '<div class="home-vazio">' +
+          (busca
+            ? '<p>Nenhum resultado para <strong>"' + busca + '"</strong>.</p>'
+            : '<p>Nenhum produto disponível no momento.</p><a href="pages/publicar.html" class="btn-voltar-home">Publicar produto</a>') +
+          '</div>';
+        return;
+      }
+
       container.style.display = 'grid';
       container.style.gridTemplateColumns = 'repeat(2, minmax(520px, 1fr))';
       container.style.gap = '18px';
@@ -123,6 +157,8 @@
     
     document.addEventListener('DOMContentLoaded', function() {
       exibirProdutos();
+      document.getElementById('buscaProduto').addEventListener('input', exibirProdutos);
+      document.getElementById('ordenarProduto').addEventListener('change', exibirProdutos);
     });
   </script>
 </body>

@@ -2,14 +2,8 @@ inicializarPaginacaoPaginas();
 
 document.addEventListener('DOMContentLoaded', function() {
   atualizarNomePerfil();
-
-  var linkPerfil = document.getElementById('linkPerfil');
-  if (linkPerfil) {
-    linkPerfil.addEventListener('contextmenu', function(e) {
-    });
-  }
+  aplicarAvatarPerfil();
 });
-document.addEventListener('DOMContentLoaded', function() { aplicarAvatarPerfil(); });
 
 function atualizarNomePerfil() {
   var idUsuarioLogado = localStorage.getItem('swapstore_usuario_logado');
