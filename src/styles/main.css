@@ -1483,3 +1483,62 @@ body[data-pagina="carrinho"] h2 {
   font-size: 0.72rem;
   white-space: nowrap;
 }
+
+.avaliacoes-section{
+    margin-top:40px;
+    border-top:1px solid #ddd;
+    padding-top:20px;
+}
+
+.avaliacoes-section input,
+.avaliacoes-section select,
+.avaliacoes-section textarea{
+    width:100%;
+    padding:10px;
+    margin-bottom:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+.avaliacoes-section textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+.btn-avaliar{
+    padding:12px 20px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.card-avaliacao{
+    margin-top:15px;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    background:#fafafa;
+}
+
+.estrelas{
+    margin:8px 0;
+    font-size:18px;
+}
+.estrelas-avaliacao{
+    margin-bottom:15px;
+}
+
+.estrela{
+    font-size:35px;
+    cursor:pointer;
+    color:#ccc;
+    transition:.2s;
+}
+
+.estrela:hover{
+    transform:scale(1.1);
+}
+
+.estrela.ativa{
+    color:gold;
+}

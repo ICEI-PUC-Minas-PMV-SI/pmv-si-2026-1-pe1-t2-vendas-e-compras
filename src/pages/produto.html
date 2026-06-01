@@ -53,6 +53,8 @@
   </footer>
 
   <script>
+    var notaSelecionada = 0;
+
     function comprarProduto(idProduto, quantidade) {
       var idComprador = localStorage.getItem('swapstore_usuario_logado');
       if (!idComprador) {
@@ -135,6 +137,32 @@
                       '</div>' +
                       '<p class="produto-descricao">' + (produto.descricao || 'Sem descrição') + '</p>';
       
+      div.innerHTML += `
+        <div class="avaliacoes-section">
+            <h2>Avaliações</h2>
+            <input
+                type="text"
+                id="nomeAvaliacao"
+                placeholder="Seu nome">
+              <div class="estrelas-avaliacao">
+                <span class="estrela" data-nota="1">★</span>
+                <span class="estrela" data-nota="2">★</span>
+                <span class="estrela" data-nota="3">★</span>
+                <span class="estrela" data-nota="4">★</span>
+                <span class="estrela" data-nota="5">★</span>
+              </div>
+            <textarea
+                id="comentarioAvaliacao"
+                placeholder="Digite seu comentário">
+            </textarea>
+            <button
+                class="btn-avaliar"
+                onclick="enviarAvaliacao('${produto.id_produto}')">
+                Enviar Avaliação
+            </button>
+            <div id="listaAvaliacoes"></div>
+        </div>`;
+
       if (disponivel) {
         div.innerHTML += '<div class="compra-section">' +
                          '<label class="qtd-label" for="qtdCompra">Quantidade</label>' +
@@ -155,6 +183,30 @@
       containerAcoes.appendChild(botaoVoltar);
       div.appendChild(containerAcoes);
       container.appendChild(div);
+
+      var estrelas = div.querySelectorAll('.estrela');
+
+        estrelas.forEach(function(estrela){
+
+            estrela.addEventListener('click', function(){
+
+                notaSelecionada = parseInt(
+                    this.getAttribute('data-nota')
+                );
+                estrelas.forEach(function(e){
+                    e.classList.remove('ativa');
+                });
+                estrelas.forEach(function(e){
+                    if (
+                        parseInt(e.getAttribute('data-nota'))
+                        <= notaSelecionada
+                    ) {
+                        e.classList.add('ativa');
+                    }
+                });
+            });
+        });
+      carregarAvaliacoes(produto.id_produto);
       
       if (disponivel) {
         document.getElementById('btnComprar').addEventListener('click', function() {
@@ -163,6 +215,82 @@
         });
       }
     }
+
+    function enviarAvaliacao(idProduto) {
+
+    const nome =
+        document.getElementById('nomeAvaliacao').value.trim();
+
+    const nota = notaSelecionada;
+        if(nota === 0){
+        alert('Selecione uma nota.');
+        return;
+        }
+
+    const comentario =
+        document.getElementById('comentarioAvaliacao').value.trim();
+
+    if (!nome || !comentario) {
+        alert('Preencha todos os campos.');
+        return;
+    }
+
+    const avaliacao = {
+        nome: nome,
+        nota: nota,
+        comentario: comentario,
+        data: new Date().toLocaleDateString('pt-BR')
+    };
+
+    let avaliacoes =
+        JSON.parse(localStorage.getItem('swapstore_avaliacoes')) || {};
+
+    if (!avaliacoes[idProduto]) {
+        avaliacoes[idProduto] = [];
+    }
+
+    avaliacoes[idProduto].push(avaliacao);
+
+    localStorage.setItem(
+        'swapstore_avaliacoes',
+        JSON.stringify(avaliacoes)
+    );
+
+    document.getElementById('nomeAvaliacao').value = '';
+    document.getElementById('comentarioAvaliacao').value = '';
+
+    carregarAvaliacoes(idProduto);
+}
+
+function carregarAvaliacoes(idProduto) {
+
+    let avaliacoes =
+        JSON.parse(localStorage.getItem('swapstore_avaliacoes')) || {};
+
+    let lista =
+        avaliacoes[idProduto] || [];
+
+    let html = '';
+
+    lista.slice().reverse().forEach(function(avaliacao) {
+
+        html += `
+            <div class="card-avaliacao">
+                <h4>${avaliacao.nome}</h4>
+
+                <div class="estrelas">
+                    ${'⭐'.repeat(avaliacao.nota)}
+                </div>
+
+                <p>${avaliacao.comentario}</p>
+
+                <small>${avaliacao.data}</small>
+            </div>
+        `;
+    });
+
+    document.getElementById('listaAvaliacoes').innerHTML = html;
+}
 
     document.addEventListener('DOMContentLoaded', function() {
       carregarProduto();
