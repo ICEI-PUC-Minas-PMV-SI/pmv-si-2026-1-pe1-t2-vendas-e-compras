@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script src="../scripts/utils.js" defer></script>
+  <script src="../scripts/paginacao.js" defer></script>
+  <script src="../scripts/main.js" defer></script>
+  <script src="../scripts/crud-produtos/criar-produto.js" defer></script>
+  <title>SwapStore - Publicar</title>
+</head>
+<body data-pagina="publicar">
+  <header class="site-header">
+    <div class="top-green-line"></div>
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="Ir para a Home">
+        <img src="../assets/images/logo.jpg" alt="Logo da SwapStore">
+      </a>
+
+      <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
+        <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
+        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+      </nav>
+
+      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+        <span class="profile-avatar"></span>
+        <span class="profile-name">Name</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-empty container">
+    <h2>Publicar Produto</h2>
+    <form id="formPublicar">
+      <input type="text" id="nomeProduto" placeholder="Nome do Produto" required><br>
+      <input type="text" id="precoProduto" placeholder="R$ 0,00" inputmode="decimal" autocomplete="off" required><br>
+      <label for="quantidadeProduto">Quantos itens você tem disponível?</label>
+      <input type="number" id="quantidadeProduto" placeholder="Ex: 5" min="1" value="1" required><br>
+      <textarea id="descricaoProduto" placeholder="Descrição"></textarea><br>
+      <input type="file" id="imagemProduto" accept="image/*"><br>
+      <button type="submit">Publicar</button>
+    </form>
+    <div id="mensagemPublicar"></div>
+    <div id="confirmBox" class="confirm-box" aria-hidden="true"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <span class="footer-brand">SwapStore</span>
+      <span class="footer-tagline">Compre e venda com quem você conhece</span>
+      <span class="footer-copy">© 2026 · PUC Minas</span>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var form = document.getElementById('formPublicar');
+      var inputPreco = document.getElementById('precoProduto');
+      var mensagem = document.getElementById('mensagemPublicar');
+
+      aplicarMascaraMoeda(inputPreco);
+
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var nome = document.getElementById('nomeProduto').value.trim();
+        var preco = lerPrecoComoNumero(inputPreco.value);
+        var quantidade = parseInt(document.getElementById('quantidadeProduto').value, 10);
+        var descricao = document.getElementById('descricaoProduto').value.trim();
+        var imagemInput = document.getElementById('imagemProduto');
+
+        if (!nome || preco <= 0 || isNaN(quantidade) || quantidade < 1) {
+          if (mensagem) {
+            mensagem.textContent = 'Preencha nome, preço e quantidade corretamente.';
+            mensagem.style.color = '#c53030';
+          }
+          return;
+        }
+
+        function finalizarPublicacao(imagemData) {
+          var criado = criarProduto(nome, preco, descricao, imagemData || '', quantidade);
+          if (!criado) {
+            if (mensagem) {
+              mensagem.textContent = 'Não foi possível publicar o produto. Verifique se você está logado.';
+              mensagem.style.color = '#c53030';
+            }
+            return;
+          }
+
+          if (mensagem) {
+            mensagem.textContent = 'Produto publicado com sucesso!';
+            mensagem.style.color = '#1b8b4a';
+          }
+
+          form.reset();
+          inputPreco.value = '';
+        }
+
+        if (imagemInput && imagemInput.files && imagemInput.files[0]) {
+          var leitor = new FileReader();
+          leitor.onload = function(ev) {
+            finalizarPublicacao(ev.target.result);
+          };
+          leitor.readAsDataURL(imagemInput.files[0]);
+          return;
+        }
+
+        finalizarPublicacao('');
+      });
+    });
+  </script>
+</body>
+</html>

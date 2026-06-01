@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script src="../scripts/utils.js" defer></script>
+  <script src="../scripts/carrinho.js" defer></script>
+  <script src="../scripts/paginacao.js" defer></script>
+  <script src="../scripts/main.js" defer></script>
+  <title>SwapStore - Carrinho</title>
+</head>
+<body data-pagina="carrinho">
+  <header class="site-header">
+    <div class="top-green-line"></div>
+    <div class="container header-content">
+      <a class="brand" href="../index.html" aria-label="Ir para a Home">
+        <img src="../assets/images/logo.jpg" alt="Logo da SwapStore">
+      </a>
+
+      <button class="menu-toggle" id="botaoMenu" aria-label="Abrir menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="navegacaoPrincipal" aria-label="Navegacao principal">
+        <a href="../index.html" class="nav-link" data-pagina-link="inicio">Home</a>
+        <a href="produto.html" class="nav-link" data-pagina-link="produto">Produto</a>
+        <a href="carrinho.html" class="nav-link" data-pagina-link="carrinho">Carrinho</a>
+        <a href="publicar.html" class="nav-link" data-pagina-link="publicar">Publicar</a>
+      </nav>
+
+      <a class="profile-box" id="linkPerfil" href="perfil.html" aria-label="Ir para a pagina de perfil">
+        <span class="profile-avatar"></span>
+        <span class="profile-name">Name</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page-empty container">
+    <h2>Meu Carrinho</h2>
+    <div id="conteudoCarrinho"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <span class="footer-brand">SwapStore</span>
+      <span class="footer-tagline">Compre e venda com quem você conhece</span>
+      <span class="footer-copy">© 2026 · PUC Minas</span>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      renderizarCarrinho();
+    });
+
+    function renderizarCarrinho() {
+      var carrinho = obterCarrinho();
+      var container = document.getElementById('conteudoCarrinho');
+
+      if (!carrinho.length) {
+        container.innerHTML =
+          '<div class="carrinho-vazio">' +
+            '<div class="carrinho-vazio-icone">🛒</div>' +
+            '<p>Seu carrinho está vazio.</p>' +
+            '<a href="../index.html" class="btn-voltar-home">Ver produtos</a>' +
+          '</div>';
+        return;
+      }
+
+      var total = 0;
+      var itensHTML = '';
+
+      for (var i = 0; i < carrinho.length; i++) {
+        var item = carrinho[i];
+        var subtotal = item.preco * item.quantidade;
+        total += subtotal;
+        var imgSrc = item.imagem && item.imagem.length ? item.imagem : '../assets/images/sem_imagem.jpg';
+
+        itensHTML +=
+          '<li class="carrinho-item" data-id="' + item.id_produto + '">' +
+            '<div class="carrinho-item-thumb">' +
+              '<img src="' + imgSrc + '" alt="">' +
+            '</div>' +
+            '<div class="carrinho-item-info">' +
+              '<strong class="carrinho-item-nome">' + item.nome + '</strong>' +
+              '<span class="carrinho-item-preco-unit">' + formatarMoedaBR(item.preco) + ' / un.</span>' +
+            '</div>' +
+            '<div class="carrinho-qty">' +
+              '<button class="carrinho-qty-btn" onclick="alterarQtd(\'' + item.id_produto + '\', -1)">-</button>' +
+              '<span class="carrinho-qty-num">' + item.quantidade + '</span>' +
+              '<button class="carrinho-qty-btn" onclick="alterarQtd(\'' + item.id_produto + '\', 1)">+</button>' +
+            '</div>' +
+            '<div class="carrinho-item-subtotal">' + formatarMoedaBR(subtotal) + '</div>' +
+            '<button class="carrinho-remover" onclick="retirarItem(\'' + item.id_produto + '\')" title="Remover">&times;</button>' +
+          '</li>';
+      }
+
+      container.innerHTML =
+        '<ul class="carrinho-lista">' + itensHTML + '</ul>' +
+        '<div class="carrinho-rodape">' +
+          '<div class="carrinho-total">' +
+            '<span>Total</span>' +
+            '<strong>' + formatarMoedaBR(total) + '</strong>' +
+          '</div>' +
+          '<button class="btn-finalizar" onclick="finalizarCompra()">Finalizar Compra</button>' +
+        '</div>';
+    }
+
+    function alterarQtd(idProduto, delta) {
+      var carrinho = obterCarrinho();
+      var qtdAtual = 0;
+      for (var i = 0; i < carrinho.length; i++) {
+        if (carrinho[i].id_produto === idProduto) {
+          qtdAtual = carrinho[i].quantidade;
+          break;
+        }
+      }
+      atualizarQuantidadeCarrinho(idProduto, qtdAtual + delta);
+      renderizarCarrinho();
+
+    }
+
+    function retirarItem(idProduto) {
+      removerDoCarrinho(idProduto);
+      renderizarCarrinho();
+
+    }
+
+    function finalizarCompra() {
+      var carrinho = obterCarrinho();
+      if (!carrinho.length) return;
+
+      var produtosJSON = localStorage.getItem('swapstore_produtos');
+      var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
+
+      for (var i = 0; i < carrinho.length; i++) {
+        var item = carrinho[i];
+        var produto = null;
+        for (var j = 0; j < produtos.length; j++) {
+          if (produtos[j].id_produto === item.id_produto) {
+            produto = produtos[j];
+            break;
+          }
+        }
+        if (!produto || produto.quantidade < item.quantidade) {
+          alert('"' + item.nome + '" não tem estoque suficiente. Ajuste a quantidade.');
+          return;
+        }
+      }
+
+      for (var i = 0; i < carrinho.length; i++) {
+        var item = carrinho[i];
+        for (var j = 0; j < produtos.length; j++) {
+          if (produtos[j].id_produto === item.id_produto) {
+            produtos[j].quantidade -= item.quantidade;
+            if (produtos[j].quantidade <= 0) {
+              produtos[j].quantidade = 0;
+              produtos[j].status = 'indisponivel';
+            }
+            break;
+          }
+        }
+      }
+
+      localStorage.setItem('swapstore_produtos', JSON.stringify(produtos));
+
+      var idComprador = localStorage.getItem('swapstore_usuario_logado');
+      var historicoJSON = localStorage.getItem('swapstore_historico');
+      var historico = historicoJSON ? JSON.parse(historicoJSON) : [];
+      var totalCompra = 0;
+      var itensHistorico = [];
+      for (var k = 0; k < carrinho.length; k++) {
+        totalCompra += carrinho[k].preco * carrinho[k].quantidade;
+        itensHistorico.push({
+          id_produto: carrinho[k].id_produto,
+          nome: carrinho[k].nome,
+          preco: carrinho[k].preco,
+          quantidade: carrinho[k].quantidade,
+          imagem: carrinho[k].imagem
+        });
+      }
+      historico.push({
+        id_compra: Date.now().toString(),
+        id_comprador: idComprador,
+        itens: itensHistorico,
+        total: totalCompra,
+        data: new Date().toISOString()
+      });
+      localStorage.setItem('swapstore_historico', JSON.stringify(historico));
+
+      limparCarrinho();
+
+
+      var container = document.getElementById('conteudoCarrinho');
+      container.innerHTML =
+        '<div class="carrinho-vazio carrinho-sucesso">' +
+          '<div class="sucesso-icone">✓</div>' +
+          '<h3>Compra realizada!</h3>' +
+          '<p>Seus itens foram comprados com sucesso.</p>' +
+          '<a href="../index.html" class="btn-voltar-home">Continuar comprando</a>' +
+        '</div>';
+    }
+  </script>
+</body>
+</html>
