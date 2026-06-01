@@ -102,8 +102,15 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.profile-box {
+.header-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
   justify-self: end;
+}
+
+.profile-box {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -113,6 +120,130 @@ body {
   padding: 0.32rem 0.65rem;
   transition: background 0.15s;
 }
+
+.btn-notif {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-notif:hover { background: #efefef; }
+
+.notif-badge {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 700;
+  min-width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  pointer-events: none;
+  border: 1.5px solid #fff;
+}
+
+.notif-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 300px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 12px;
+  display: none;
+  z-index: 100;
+}
+
+.notif-popover.open { display: block; }
+
+.notif-popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+  color: #2b2b2b;
+}
+
+.btn-notif-limpar-todos {
+  font-size: 0.75rem;
+  color: var(--primary-dark);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}
+
+.btn-notif-limpar-todos:hover { text-decoration: underline; }
+
+.notif-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f8f8fb;
+  border: 1px solid var(--line);
+}
+
+.notif-texto {
+  flex: 1;
+  font-size: 0.82rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+.notif-item-x {
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 1.1rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 2px;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+
+.notif-item-x:hover { color: #e74c3c; }
+
+.notif-vazia {
+  text-align: center;
+  color: #bbb;
+  font-size: 0.85rem;
+  padding: 16px 0;
+  margin: 0;
+}
+
+.notif-estrelas { color: #f5a623; font-size: 0.8rem; }
 
 .profile-avatar {
   width: 28px;
@@ -1121,6 +1252,32 @@ body[data-pagina="perfil"] #containerProdutos > .produto-resumo-card .botao-remo
   font-size: 0.85rem;
   color: #999;
   margin-bottom: 0.8rem;
+}
+
+/* ===== Resumo de vendas ===== */
+.vendas-resumo {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--primary-dark);
+  color: #fff;
+  border-radius: 12px;
+  padding: 14px 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.vendas-resumo-label {
+  font-size: 0.78rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.vendas-resumo-valor {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 /* ===== Histórico de compras ===== */

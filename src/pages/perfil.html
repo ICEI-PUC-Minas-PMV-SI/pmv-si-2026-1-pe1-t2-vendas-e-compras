@@ -51,6 +51,7 @@
     <div class="perfil-tabs">
       <button class="perfil-tab is-active" id="tabProdutos">Meus Produtos</button>
       <button class="perfil-tab" id="tabHistorico">Minhas Compras</button>
+      <button class="perfil-tab" id="tabVendas">Minhas Vendas</button>
     </div>
 
     <div id="painelProdutos">
@@ -60,6 +61,10 @@
 
     <div id="painelHistorico" style="display:none;">
       <div id="containerHistorico"></div>
+    </div>
+
+    <div id="painelVendas" style="display:none;">
+      <div id="containerVendas"></div>
     </div>
 
     <div id="confirmBox" class="confirm-box" aria-hidden="true"></div>
@@ -272,6 +277,74 @@
       });
     }
 
+    function exibirMinhasVendas() {
+      var idUsuario = localStorage.getItem('swapstore_usuario_logado');
+      var historicoJSON = localStorage.getItem('swapstore_historico');
+      var historico = historicoJSON ? JSON.parse(historicoJSON) : [];
+      var produtosJSON = localStorage.getItem('swapstore_produtos');
+      var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
+      var container = document.getElementById('containerVendas');
+      container.innerHTML = '';
+
+      var mapaVendedor = {};
+      produtos.forEach(function(p) { mapaVendedor[p.id_produto] = p.id_usuario; });
+
+      var minhasVendas = [];
+      historico.forEach(function(compra) {
+        var itensVendidos = compra.itens.filter(function(item) {
+          var vendedor = item.id_usuario_vendedor || mapaVendedor[item.id_produto];
+          return vendedor === idUsuario;
+        });
+        if (itensVendidos.length) {
+          var subtotal = 0;
+          itensVendidos.forEach(function(i) { subtotal += i.preco * i.quantidade; });
+          minhasVendas.push({
+            id_compra: compra.id_compra,
+            data: compra.data,
+            itens: itensVendidos,
+            total: subtotal
+          });
+        }
+      });
+
+      if (!minhasVendas.length) {
+        container.innerHTML = '<div class="historico-vazio"><p>Você ainda não realizou nenhuma venda.</p><a href="publicar.html" class="btn-voltar-home">Publicar produto</a></div>';
+        return;
+      }
+
+      var totalGeral = 0;
+      minhasVendas.forEach(function(v) { totalGeral += v.total; });
+      var resumo = document.createElement('div');
+      resumo.className = 'vendas-resumo';
+      resumo.innerHTML = '<span class="vendas-resumo-label">Total vendido</span>' +
+        '<span class="vendas-resumo-valor">' + formatarMoedaBR(totalGeral) + '</span>';
+      container.appendChild(resumo);
+
+      minhasVendas.slice().reverse().forEach(function(venda) {
+        var data = new Date(venda.data);
+        var dataFormatada = data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        var itensHTML = '';
+        venda.itens.forEach(function(item) {
+          var imgSrc = item.imagem && item.imagem.length ? item.imagem : '../assets/images/sem_imagem.jpg';
+          itensHTML += '<div class="historico-produto">' +
+            '<div class="historico-produto-thumb"><img src="' + imgSrc + '" alt=""></div>' +
+            '<span class="historico-produto-nome">' + item.nome + ' x' + item.quantidade + '</span>' +
+            '<span class="historico-produto-preco">' + formatarMoedaBR(item.preco) + '</span>' +
+            '</div>';
+        });
+
+        var div = document.createElement('div');
+        div.className = 'historico-item';
+        div.innerHTML = '<div class="historico-header">' +
+          '<span class="historico-data">' + dataFormatada + '</span>' +
+          '<span class="historico-total">' + formatarMoedaBR(venda.total) + '</span>' +
+          '</div>' +
+          '<div class="historico-itens">' + itensHTML + '</div>';
+        container.appendChild(div);
+      });
+    }
+
     function abrirModalAvaliacaoPerfil(idProduto, idCompra) {
       var notaModal = 0;
       var produtosJSON = localStorage.getItem('swapstore_produtos');
@@ -448,22 +521,36 @@
 
       var tabProdutos = document.getElementById('tabProdutos');
       var tabHistorico = document.getElementById('tabHistorico');
+      var tabVendas = document.getElementById('tabVendas');
       var painelProdutos = document.getElementById('painelProdutos');
       var painelHistorico = document.getElementById('painelHistorico');
+      var painelVendas = document.getElementById('painelVendas');
+
+      function ativarTab(tabAtiva) {
+        tabProdutos.classList.remove('is-active');
+        tabHistorico.classList.remove('is-active');
+        tabVendas.classList.remove('is-active');
+        painelProdutos.style.display = 'none';
+        painelHistorico.style.display = 'none';
+        painelVendas.style.display = 'none';
+        tabAtiva.classList.add('is-active');
+      }
 
       tabProdutos.addEventListener('click', function() {
-        tabProdutos.classList.add('is-active');
-        tabHistorico.classList.remove('is-active');
+        ativarTab(tabProdutos);
         painelProdutos.style.display = '';
-        painelHistorico.style.display = 'none';
       });
 
       tabHistorico.addEventListener('click', function() {
-        tabHistorico.classList.add('is-active');
-        tabProdutos.classList.remove('is-active');
+        ativarTab(tabHistorico);
         painelHistorico.style.display = '';
-        painelProdutos.style.display = 'none';
         exibirHistorico();
+      });
+
+      tabVendas.addEventListener('click', function() {
+        ativarTab(tabVendas);
+        painelVendas.style.display = '';
+        exibirMinhasVendas();
       });
     });
 
