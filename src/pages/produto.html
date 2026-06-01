@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script>
+    if (!localStorage.getItem('swapstore_usuario_logado')) {
+      window.location.href = '../login.html';
+    }
+  </script>
   <script src="../scripts/utils.js" defer></script>
   <script src="../scripts/carrinho.js" defer></script>
   <script src="../scripts/paginacao.js" defer></script>
@@ -104,64 +109,93 @@
       var id = params.get('id');
       var container = document.getElementById('produtoDetalhe');
       container.innerHTML = '';
-      
+
       if (!id) {
         container.innerHTML = '<div class="produto-vazio">Produto não especificado.</div>';
         return;
       }
-      
+
       var produto = buscarProduto(id);
       if (!produto) {
         container.innerHTML = '<div class="produto-vazio">Produto não encontrado.</div>';
         return;
       }
-      
+
       if (!produto.quantidade) produto.quantidade = 1;
-      
-      var div = document.createElement('div');
-      div.className = 'produto-detalhe';
+
       var imgSrc = produto.imagem && produto.imagem.length ? produto.imagem : '../assets/images/sem_imagem.jpg';
-      
       var disponivel = produto.status === 'disponivel' && produto.quantidade > 0;
       var statusText = disponivel ? 'Disponível (' + produto.quantidade + ')' : 'Indisponível';
       var statusClass = disponivel ? 'is-disponivel' : 'is-indisponivel';
-      
-      div.innerHTML = '<div class="produto-imagem"><img src="' + imgSrc + '" alt="Imagem do produto"></div>' +
-                      '<div class="produto-info">' +
-                      '<h1 class="produto-titulo">' + produto.nome + '</h1>' +
-                      '<div class="produto-meta">' +
-                      '<div class="produto-preco">' + formatarMoedaBR(produto.preco) + '</div>' +
-                      '<span class="produto-status ' + statusClass + '">' + statusText + '</span>' +
-                      '</div>' +
-                      '<p class="produto-descricao">' + (produto.descricao || 'Sem descrição') + '</p>';
-      
-      if (disponivel) {
-        div.innerHTML += '<div class="compra-section">' +
-                         '<label class="qtd-label" for="qtdCompra">Quantidade</label>' +
-                         '<input type="number" id="qtdCompra" class="qtd-input" min="1" max="' + produto.quantidade + '" value="1" />' +
-                         '<button id="btnComprar" class="btn-comprar">Adicionar ao Carrinho</button>' +
-                         '</div>';
-      } else {
-        div.innerHTML += '<p class="produto-alerta">Este item está indisponível no momento.</p>';
-      }
-      
-      var botaoVoltar = document.createElement('a');
-      botaoVoltar.href = '../index.html';
-      botaoVoltar.className = 'btn-voltar';
-      botaoVoltar.textContent = 'Voltar';
-      
-      var containerAcoes = document.createElement('div');
-      containerAcoes.className = 'produto-acoes';
-      containerAcoes.appendChild(botaoVoltar);
-      div.appendChild(containerAcoes);
+
+      var compraHTML = disponivel
+        ? '<div class="compra-section">' +
+          '<label class="qtd-label" for="qtdCompra">Quantidade</label>' +
+          '<input type="number" id="qtdCompra" class="qtd-input" min="1" max="' + produto.quantidade + '" value="1" />' +
+          '<button id="btnComprar" class="btn-comprar">Adicionar ao Carrinho</button>' +
+          '</div>'
+        : '<p class="produto-alerta">Este item está indisponível no momento.</p>';
+
+      var div = document.createElement('div');
+      div.className = 'produto-detalhe';
+      div.innerHTML =
+        '<div class="produto-imagem"><img src="' + imgSrc + '" alt="Imagem do produto"></div>' +
+        '<div class="produto-info">' +
+          '<h1 class="produto-titulo">' + produto.nome + '</h1>' +
+          '<div class="produto-meta">' +
+            '<div class="produto-preco">' + formatarMoedaBR(produto.preco) + '</div>' +
+            '<span class="produto-status ' + statusClass + '">' + statusText + '</span>' +
+          '</div>' +
+          '<p class="produto-descricao">' + (produto.descricao || 'Sem descrição') + '</p>' +
+          compraHTML +
+        '</div>' +
+        '<div class="produto-acoes">' +
+          '<a href="../index.html" class="btn-voltar">Voltar</a>' +
+        '</div>' +
+        '<div class="avaliacoes-section">' +
+          '<h2 class="avaliacoes-titulo">Avaliações</h2>' +
+          '<div class="lista-avaliacoes" id="listaAvaliacoes"></div>' +
+        '</div>';
+
       container.appendChild(div);
-      
+
+      carregarAvaliacoes(produto.id_produto);
+
       if (disponivel) {
         document.getElementById('btnComprar').addEventListener('click', function() {
           var qtd = parseInt(document.getElementById('qtdCompra').value) || 1;
           comprarProduto(produto.id_produto, qtd);
         });
       }
+    }
+
+    function carregarAvaliacoes(idProduto) {
+      var avaliacoes = JSON.parse(localStorage.getItem('swapstore_avaliacoes')) || {};
+      var lista = avaliacoes[idProduto] || [];
+      var container = document.getElementById('listaAvaliacoes');
+      if (!container) return;
+
+      if (!lista.length) {
+        container.innerHTML = '<p class="avaliacao-vazia">Nenhuma avaliação ainda.</p>';
+        return;
+      }
+
+      var html = '';
+      lista.slice().reverse().forEach(function(av) {
+        var estrelasHTML = '';
+        for (var i = 1; i <= 5; i++) {
+          estrelasHTML += '<span class="estrela-exibicao' + (i <= av.nota ? ' ativa' : '') + '">★</span>';
+        }
+        html += '<div class="card-avaliacao">' +
+          '<div class="card-avaliacao-header">' +
+            '<span class="card-avaliacao-nome">' + av.nome + '</span>' +
+            '<span class="card-avaliacao-data">' + av.data + '</span>' +
+          '</div>' +
+          '<div class="card-avaliacao-estrelas">' + estrelasHTML + '</div>' +
+          '<p class="card-avaliacao-comentario">' + av.comentario + '</p>' +
+          '</div>';
+      });
+      container.innerHTML = html;
     }
 
     document.addEventListener('DOMContentLoaded', function() {

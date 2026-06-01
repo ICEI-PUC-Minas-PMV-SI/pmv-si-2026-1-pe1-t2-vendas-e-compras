@@ -9,12 +9,20 @@ function criarUsuario(usuario, senha, email) {
   var usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
   
   var emailNormalizado = email.toLowerCase().trim();
-  
+
   var emailExiste = usuarios.some(function(usuarioDaLista) {
     return usuarioDaLista.email.toLowerCase().trim() === emailNormalizado;
   });
-  
+
   if (emailExiste) {
+    return null;
+  }
+
+  var usuarioExiste = usuarios.some(function(usuarioDaLista) {
+    return usuarioDaLista.usuario.toLowerCase() === usuario.toLowerCase();
+  });
+
+  if (usuarioExiste) {
     return null;
   }
   

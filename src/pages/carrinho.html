@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script>
+    if (!localStorage.getItem('swapstore_usuario_logado')) {
+      window.location.href = '../login.html';
+    }
+  </script>
   <script src="../scripts/utils.js" defer></script>
   <script src="../scripts/carrinho.js" defer></script>
   <script src="../scripts/paginacao.js" defer></script>
@@ -118,9 +123,22 @@
           break;
         }
       }
+
+      if (delta > 0) {
+        var produtosJSON = localStorage.getItem('swapstore_produtos');
+        var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
+        var estoqueMax = 0;
+        for (var j = 0; j < produtos.length; j++) {
+          if (produtos[j].id_produto === idProduto) {
+            estoqueMax = produtos[j].quantidade;
+            break;
+          }
+        }
+        if (qtdAtual >= estoqueMax) return;
+      }
+
       atualizarQuantidadeCarrinho(idProduto, qtdAtual + delta);
       renderizarCarrinho();
-
     }
 
     function retirarItem(idProduto) {

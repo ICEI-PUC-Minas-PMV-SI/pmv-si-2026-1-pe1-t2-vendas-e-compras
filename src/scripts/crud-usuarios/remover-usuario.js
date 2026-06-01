@@ -1,7 +1,7 @@
 function removerUsuario(usuario, senha) {
   var CHAVE_USUARIOS = 'swapstore_usuarios';
   
-  var id = listarUsuarios(usuario, senha);
+  var id = buscaUsuario(usuario, senha);
   
   if (!id) {
     return false;

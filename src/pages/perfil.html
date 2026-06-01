@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../styles/main.css">
+  <script>
+    if (!localStorage.getItem('swapstore_usuario_logado')) {
+      window.location.href = '../login.html';
+    }
+  </script>
   <script src="../scripts/utils.js" defer></script>
   <script src="../scripts/paginacao.js" defer></script>
   <script src="../scripts/main.js" defer></script>
@@ -231,6 +236,8 @@
         return;
       }
 
+      var avaliacoes = JSON.parse(localStorage.getItem('swapstore_avaliacoes')) || {};
+
       minhasCompras.slice().reverse().forEach(function(compra) {
         var data = new Date(compra.data);
         var dataFormatada = data.toLocaleDateString('pt-BR') + ' às ' + data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -240,10 +247,17 @@
         compra.itens.forEach(function(item) {
           var imgSrc = item.imagem && item.imagem.length ? item.imagem : '../assets/images/sem_imagem.jpg';
           var precoItem = formatarMoedaBR(item.preco);
+          var jaAvaliou = (avaliacoes[item.id_produto] || []).some(function(a) {
+            return a.id_usuario === idUsuario && a.id_compra === compra.id_compra;
+          });
+          var btnAvaliar = jaAvaliou
+            ? '<span class="btn-avaliado">Avaliado ✓</span>'
+            : '<button class="btn-avaliar-historico" onclick="abrirModalAvaliacaoPerfil(\'' + item.id_produto + '\', \'' + compra.id_compra + '\')">Avaliar</button>';
           itensHTML += '<div class="historico-produto">' +
             '<div class="historico-produto-thumb"><img src="' + imgSrc + '" alt=""></div>' +
             '<span class="historico-produto-nome">' + item.nome + ' x' + item.quantidade + '</span>' +
             '<span class="historico-produto-preco">' + precoItem + '</span>' +
+            btnAvaliar +
             '</div>';
         });
 
@@ -255,6 +269,105 @@
           '</div>' +
           '<div class="historico-itens">' + itensHTML + '</div>';
         container.appendChild(div);
+      });
+    }
+
+    function abrirModalAvaliacaoPerfil(idProduto, idCompra) {
+      var notaModal = 0;
+      var produtosJSON = localStorage.getItem('swapstore_produtos');
+      var produtos = produtosJSON ? JSON.parse(produtosJSON) : [];
+      var produto = null;
+      for (var i = 0; i < produtos.length; i++) {
+        if (produtos[i].id_produto === idProduto) { produto = produtos[i]; break; }
+      }
+      var nomeProduto = produto ? produto.nome : 'produto';
+
+      var confirmBox = document.getElementById('confirmBox');
+      if (!confirmBox) return;
+
+      confirmBox.innerHTML =
+        '<div class="confirm-backdrop"></div>' +
+        '<div class="confirm-content" role="dialog" aria-label="Avaliar produto">' +
+          '<h3>Avaliar produto</h3>' +
+          '<p style="font-size:0.88rem;color:#888;margin-bottom:12px;">' + nomeProduto + '</p>' +
+          '<div class="form-atualizar-produto">' +
+            '<p class="avaliacoes-form-label">Sua nota</p>' +
+            '<div class="estrelas-avaliacao" id="estrelasModal">' +
+              '<span class="estrela" data-nota="1">★</span>' +
+              '<span class="estrela" data-nota="2">★</span>' +
+              '<span class="estrela" data-nota="3">★</span>' +
+              '<span class="estrela" data-nota="4">★</span>' +
+              '<span class="estrela" data-nota="5">★</span>' +
+            '</div>' +
+            '<textarea id="comentarioModal" placeholder="Escreva seu comentário..." style="font-family:inherit;"></textarea>' +
+            '<div class="confirm-actions">' +
+              '<button type="button" class="btn-cancelar" id="btnCancelarAvaliacao">Cancelar</button>' +
+              '<button type="button" class="btn-confirmar" id="btnConfirmarAvaliacao">Enviar</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+
+      confirmBox.classList.add('open');
+      confirmBox.setAttribute('aria-hidden', 'false');
+
+      var estrelas = confirmBox.querySelectorAll('.estrela');
+      estrelas.forEach(function(estrela) {
+        estrela.addEventListener('click', function() {
+          notaModal = parseInt(this.getAttribute('data-nota'));
+          estrelas.forEach(function(e) {
+            e.classList.toggle('ativa', parseInt(e.getAttribute('data-nota')) <= notaModal);
+          });
+        });
+        estrela.addEventListener('mouseover', function() {
+          var hov = parseInt(this.getAttribute('data-nota'));
+          estrelas.forEach(function(e) {
+            e.classList.toggle('hover', parseInt(e.getAttribute('data-nota')) <= hov);
+          });
+        });
+        estrela.addEventListener('mouseout', function() {
+          estrelas.forEach(function(e) { e.classList.remove('hover'); });
+        });
+      });
+
+      function fecharModal() {
+        confirmBox.classList.remove('open');
+        confirmBox.setAttribute('aria-hidden', 'true');
+        confirmBox.innerHTML = '';
+      }
+
+      document.getElementById('btnCancelarAvaliacao').addEventListener('click', fecharModal);
+      confirmBox.querySelector('.confirm-backdrop').addEventListener('click', fecharModal);
+
+      document.getElementById('btnConfirmarAvaliacao').addEventListener('click', function() {
+        if (notaModal === 0) { alert('Selecione uma nota.'); return; }
+        var comentario = document.getElementById('comentarioModal').value.trim();
+        if (!comentario) { alert('Escreva um comentário.'); return; }
+
+        var idUsuario = localStorage.getItem('swapstore_usuario_logado');
+        var usuariosJSON = localStorage.getItem('swapstore_usuarios');
+        var usuarios = usuariosJSON ? JSON.parse(usuariosJSON) : [];
+        var usuario = null;
+        for (var i = 0; i < usuarios.length; i++) {
+          if (usuarios[i].id === idUsuario) { usuario = usuarios[i]; break; }
+        }
+        var nomeUsuario = usuario ? usuario.usuario : 'Usuário';
+
+        var avaliacao = {
+          id_usuario: idUsuario,
+          id_compra: idCompra,
+          nome: nomeUsuario,
+          nota: notaModal,
+          comentario: comentario,
+          data: new Date().toLocaleDateString('pt-BR')
+        };
+
+        var avaliacoes = JSON.parse(localStorage.getItem('swapstore_avaliacoes')) || {};
+        if (!avaliacoes[idProduto]) avaliacoes[idProduto] = [];
+        avaliacoes[idProduto].push(avaliacao);
+        localStorage.setItem('swapstore_avaliacoes', JSON.stringify(avaliacoes));
+
+        fecharModal();
+        exibirHistorico();
       });
     }
 
