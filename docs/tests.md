@@ -27,18 +27,42 @@ Preencha a tabela com o plano dos testes. Para cada Caso de Teste (CT), associe 
 
 **Caso de Teste** | **CT01 - Criar conta parte 1**
  :--------------: | ------------
-**Procedimento**  | 1) Acesse o endereço www.teste.com.br <br> 2) Clique em criar conta <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Continuar".
-**Requisitos associados** | RF-001
-**Resultado esperado** | Prosseguir para a parte 2 do cadastro
-**Dados de entrada** | Inserção de dados válidos no formulário de cadastro
-**Resultado obtido** | Sucesso
-
-**Caso de Teste** | **CT02 - Criar conta parte 2**
- :--------------: | ------------
-**Procedimento**  | 1) Preencha todos os campos do formulário <br> 2) Clique no botão "Criar conta" <br> 
+**Procedimento**  | 1) Acesse o endereço https://icei-puc-minas-pmv-si.github.io/pmv-si-2026-1-pe1-t2-vendas-e-compras/src/login.html <br> 2) Clique em "Registre-se" <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Registrar".
 **Requisitos associados** | RF-001
 **Resultado esperado** | Usuário cadastrado
 **Dados de entrada** | Inserção de dados válidos no formulário de cadastro
+**Resultado obtido** | Sucesso
+
+**Caso de Teste** | **CT02 - Cadastrar com a conta criada**
+ :--------------: | ------------
+**Procedimento**  | 1) Preencha todos os campos do formulário <br> 2) Clique no botão "Login" <br> 
+**Requisitos associados** | RF-002
+**Resultado esperado** | Usuário cadastrado / login no site
+**Dados de entrada** | Inserção de dados válidos no formulário de login
+**Resultado obtido** | Sucesso
+
+**Caso de Teste** | **CT03 - Teste da página home**
+ :--------------: | ------------
+**Procedimento**  | 1) Clique no botão de filtro <br> 2) Pesquise um produto desejado <br> 3) Adicione no carrinho. <br> 4) Clique na aba de carrinho <br> 5) Finalize a compra <br> 6) Retorne para a página do produto comprado <br> 7) Deixe uma avaliação do produto.
+**Requisitos associados** | RF-003, RF-004, RF-006, RF-007,RF-009
+**Resultado esperado** | Produto publicado
+**Dados de entrada** | Inserção de dados válidos no formulário de avaliação
+**Resultado obtido** | Sucesso
+
+**Caso de Teste** | **CT04 - Perfil do usuário**
+ :--------------: | ------------
+**Procedimento**  | 1) Clique no menu publicar <br> 2) Exclua um produto criado <br> 3) Altere um produto criado. <br> 4) Clique na parte de "Minhas vendas"
+**Requisitos associados** | RF-008, RF-010
+**Resultado esperado** | Exclusão / alteração dos produtos
+**Dados de entrada** | Inserção de dados válidos no formulário do produto
+**Resultado obtido** | Sucesso
+
+**Caso de Teste** | **CT05 - Criar um produto**
+ :--------------: | ------------
+**Procedimento**  | 1) Clique no ícone do usuário <br> 2) Preenche todos os campos do formulário <br> 3) Clique em "Publicar".
+**Requisitos associados** | RF-005, RF-011
+**Resultado esperado** | Produto publicado
+**Dados de entrada** | Inserção de dados válidos no formulário do produto
 **Resultado obtido** | Sucesso
 
 ## Registro dos Testes de Software
