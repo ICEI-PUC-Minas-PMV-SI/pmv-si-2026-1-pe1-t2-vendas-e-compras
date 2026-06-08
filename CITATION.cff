@@ -2,25 +2,29 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Web Application Template
+title: Swap Store - vendas e compras
 message: >-
   Repositório padrão para o Eixo 1 - Projeto 1: Aplicações
   Web da PUC Minas.
 type: software
 authors:
-  - given-names: Aluno 1
-    family-names: Nome Completo
-    email: aluno@pucminas.br
+  - given-names: Eduardo
+    family-names: Lopes Resende
+    email: edulopesresende19@gmail.com
     affiliation: PUC Minas
-  - given-names: Hugo
+  - given-names: Carlos
+    family-names: Eduardo Pereira
+    email: 
+    affiliation: PUC Minas
+  - given-names: Clóvis
     name-particle: 'B '
-    family-names: de Paula
+    family-names: Lemos Tavares
     name-suffix: Prof.
-    email: hugo@pucminas.br
+    email: 
     affiliation: PUC Minas
     orcid: 'https://orcid.org/0000-0002-6193-3205'
 repository-code: >-
-  https://github.com/ICEI-PUC-Minas-PMV-SI/WebApplicationProject-Template
+  https://github.com/ICEI-PUC-Minas-PMV-SI/pmv-si-2026-1-pe1-t2-vendas-e-compras
 abstract: >-
   Descrever resumidamente, em um ou dois parágrafos, o
   projeto que foi desenvolvido.
@@ -30,4 +34,4 @@ keywords:
   - CSS
   - JavaScript
   - Template
-date-released: '2024-06-23'
+date-released: '2026-06-14'
