@@ -25,7 +25,7 @@ Nesta seção o grupo deverá documentar os testes de software que verificam a c
 Preencha a tabela com o plano dos testes. Para cada Caso de Teste (CT), associe qual o Requisito Funcional ou não funcional que ele está verificando. Associe também a página (ou artefato) onde o teste será realizado e descreva o cenário do teste. Veja a tabela de exemplo.
 
 
-**Caso de Teste** | **CT01 - Criar conta parte 1**
+**Caso de Teste** | **CT01 - Criar conta **
  :--------------: | ------------
 **Procedimento**  | 1) Acesse o endereço https://icei-puc-minas-pmv-si.github.io/pmv-si-2026-1-pe1-t2-vendas-e-compras/src/login.html <br> 2) Clique em "Registre-se" <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Registrar".
 **Requisitos associados** | RF-001
@@ -51,7 +51,7 @@ Preencha a tabela com o plano dos testes. Para cada Caso de Teste (CT), associe 
 
 **Caso de Teste** | **CT04 - Perfil do usuário**
  :--------------: | ------------
-**Procedimento**  | 1) Clique no menu publicar <br> 2) Exclua um produto criado <br> 3) Altere um produto criado. <br> 4) Clique na parte de "Minhas vendas"
+**Procedimento**  | 1) Clique no ícone do usuário <br> 2) Exclua um produto criado <br> 3) Altere um produto criado. <br> 4) Clique na parte de "Minhas vendas"
 **Requisitos associados** | RF-008, RF-010
 **Resultado esperado** | Exclusão / alteração dos produtos
 **Dados de entrada** | Inserção de dados válidos no formulário do produto
@@ -59,7 +59,7 @@ Preencha a tabela com o plano dos testes. Para cada Caso de Teste (CT), associe 
 
 **Caso de Teste** | **CT05 - Criar um produto**
  :--------------: | ------------
-**Procedimento**  | 1) Clique no ícone do usuário <br> 2) Preenche todos os campos do formulário <br> 3) Clique em "Publicar".
+**Procedimento**  | 1) Clique no menu publicar <br> 2) Preenche todos os campos do formulário <br> 3) Clique em "Publicar".
 **Requisitos associados** | RF-005, RF-011
 **Resultado esperado** | Produto publicado
 **Dados de entrada** | Inserção de dados válidos no formulário do produto
@@ -69,15 +69,30 @@ Preencha a tabela com o plano dos testes. Para cada Caso de Teste (CT), associe 
 
 Esta seção deve apresentar o relatório com as evidências dos testes de software realizados no sistema pela equipe, baseado no plano de testes pré-definido. Documente cada caso de teste apresentando um vídeo ou animação que comprove o funcionamento da funcionalidade. Veja os exemplos a seguir.
 
-|*Caso de Teste*                                 |*CT01 - Criar conta parte 1*                                         |
+|*Caso de Teste*                                 |*CT01 - Criar conta *                                         |
 |---|---|
-|Requisito Associado | RF-001 - A aplicação deve permitir que os usuários criem uma conta e gerenciem seu cadastro|
-|Link do vídeo do teste realizado: | https://1drv.ms/u/s!AhD2JqpOUvJChapRtRSQ9vPzbNLwGA?e=mxZs6t| 
+|Requisito Associado | RF-001 - O sistema deve permitir criação de logins com usuário e senha. |
+|Link do vídeo do teste realizado: | https://shre.ink/TC001 | 
 
-|*Caso de Teste*                                 |*CT02 - Criar conta parte 2*                                        |
+|*Caso de Teste*                                 |*CT02 - Cadastrar com a conta criada*                                        |
 |---|---|
-|Requisito Associado | RF-001 - A aplicação deve permitir que os usuários criem uma conta e gerenciem seu cadastro|
-|Link do vídeo do teste realizado: | https://1drv.ms/v/s!AhD2JqpOUvJChapQ8CPXL-TI_A7iVg?e=spD3Ar | 
+|Requisito Associado | RF-002 - O sistema deve permitir o usuário fazer login com seu perfil cadastrado. |
+|Link do vídeo do teste realizado: | https://shre.ink/TC002 | 
+
+|*Caso de Teste*                                 |*CT03 - Teste da página home*                                        |
+|---|---|
+|Requisito Associado | RF-003 - O sistema deve permitir a filtragem de produtos por categoria e preço. <br> RF-004 - O sistema deve permitir o usuário visualizar a imagem do produto. <br> RF-006 - O sistema deve permitir que os usuários avaliem os produtos comprados. <br> RF-007 - O sistema deve calcular automaticamente o valor total da compra. <br> RF-009 - O sistema deve incluir busca de produtos por nome. |
+|Link do vídeo do teste realizado: | https://shre.ink/TC003 | 
+
+|*Caso de Teste*                                 |*CT04 - Perfil do usuário*                                        |
+|---|---|
+|Requisito Associado | RF-008 - O sistema deve permitir a edição e exclusão de produtos pelos vendedores. <br> RF-010 - O sistema deve incluir um histórico de vendas feitas pelo vendedor. |
+|Link do vídeo do teste realizado: | https://shre.ink/TC004 | 
+
+|*Caso de Teste*                                 |*CT05 - Criar um produto*                                        |
+|---|---|
+|Requisito Associado | RF-005 - O sistema deve permitir que vendedores cadastrem novos produtos. <br> RF-011 - O sistema deve validar se todos os campos obrigatórios (nome, preço, estado de conservação) foram preenchidos no cadastro do item. |
+|Link do vídeo do teste realizado: | https://shre.ink/TC005 | 
 
 
 ## Avaliação dos Testes de Software
